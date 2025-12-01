@@ -1,6 +1,6 @@
 # NFS-e Nacional — Cliente Java
 
-Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, serviços e utilitários para comunicação com a API oficial do projeto NFS-e Nacional (RFB / Abrasf).
+Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, serviços e utilitários para comunicação com a API oficial do projeto NFS-e Nacional.
 
 ## ✨ Funcionalidades
 
@@ -10,7 +10,8 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
 - 🧩 Serialização e desserialização automática dos modelos JSON
 
 ## ✨ Documentação técnica
-https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica
+- 🔗 https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica 
+
 
 ## ✨ Exemplo de uso
 
