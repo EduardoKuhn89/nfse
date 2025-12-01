@@ -1,2 +1,2 @@
 # nfse
-API para integração/emissão de NFS-e Nacional
+Cliente Java para integração com a NFS-e Nacional
