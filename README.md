@@ -12,6 +12,13 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
 ## ✨ Documentação técnica
 - 🔗 https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica 
 
+## ✨ Repositório
+
+<dependency>
+    <groupId>io.github.eduardokuhn89</groupId>
+    <artifactId>nfse-client</artifactId>
+    <version>1.1.0</version>
+</dependency>
 
 ## ✨ Exemplo de uso
 
@@ -20,7 +27,6 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
           .password(CERT_PASSWORD)
           .zoneId(ZoneId.of("America/Sao_Paulo"))
           .build();
-
 
     ConfigManager config = ConfigManager.builder()
           .certificado(certificado)
