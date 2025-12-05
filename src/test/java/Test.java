@@ -3,6 +3,9 @@ import br.com.nfse.CertificateManager;
 import br.com.nfse.ConfigManager;
 import br.com.nfse.Nfse;
 import br.com.nfse.dto.AutorEvento;
+import br.com.nfse.dto.ConvenioResult;
+import br.com.nfse.dto.EventoResult;
+import br.com.nfse.dto.NFSeResult;
 import br.com.nfse.dto.enuns.AmbienteEnum;
 import br.com.nfse.utils.DateUtils;
 import br.com.nfse.utils.FileUtils;
@@ -60,15 +63,16 @@ public class Test {
 
             ConfigManager config = buildConfig();
             TestRunner runner = new TestRunner(config);
+            Optional<TipoTeste> tipoTeste = TipoTeste.fromCodigo(testCode);
 
-            TipoTeste.fromCodigo(testCode).ifPresentOrElse(
-                    runner::executar,
-                    () -> {
-                        System.err.println(" Teste não reconhecido: " + testCode);
-                        mostrarOpcoesDisponiveis();
-                    }
-            );
+            // Se presente, executa o 'runner::executar'
+            tipoTeste.ifPresent(runner::executar);
 
+            // Se ausente, executa o bloco 'else'
+            if (!tipoTeste.isPresent()) {
+                System.err.println(" Teste não reconhecido: " + testCode);
+                mostrarOpcoesDisponiveis();
+            }
         } catch (Exception e) {
             System.err.println(" Erro na execução dos testes:");
             e.printStackTrace();
@@ -166,7 +170,7 @@ public class Test {
         private void testEnvio() throws Exception {
             TCDPS dps = DpsBuilder.criar(config);
 
-            var result = Nfse.builder()
+            NFSeResult result = Nfse.builder()
                     .config(config)
                     .assinar(true)
                     .validar(true)
@@ -177,7 +181,7 @@ public class Test {
         }
 
         private void testConvenio() throws Exception {
-            var result = Nfse.builder()
+            ConvenioResult result = Nfse.builder()
                     .config(config)
                     .consultaConvenio("4317202");
 
@@ -197,7 +201,7 @@ public class Test {
         }
 
         private void testCancelamento() throws Exception {
-            var result = Nfse.builder()
+            EventoResult result = Nfse.builder()
                     .config(config)
                     .chNFSe(CH_NFSE_TESTE)
                     .autor(AutorEvento.cnpj("93234012000161"))
@@ -215,7 +219,7 @@ public class Test {
                     "Descrição Evento"
             );
 
-            var result = Nfse.builder()
+            EventoResult result = Nfse.builder()
                     .config(config)
                     .chNFSe(CH_NFSE_TESTE)
                     .autor(AutorEvento.cnpj("93234012000161"))

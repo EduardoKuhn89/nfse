@@ -96,7 +96,7 @@ public class StringUtils {
     public static List<String> separaCol(String linha, String separador) {
         List<String> lista = new ArrayList<>();
         String campo = "";
-        for (var i = 1; i <= linha.length(); i++) {
+        for (int i = 1; i <= linha.length(); i++) {
             if (copy(linha, i, 1).equals(separador)) {
                 if (i > 1) {
                     lista.add(campo);
@@ -716,7 +716,7 @@ public class StringUtils {
 
     public static String formatBytesSize(long value) {
         double size = (double) value;
-        var i = -1;
+        int i = -1;
         do {
             size = size / 1024;
             i++;
@@ -754,7 +754,7 @@ public class StringUtils {
         StringBuilder senha = new StringBuilder();
         for (int i = 0; i < tamanho; i++) {
             int posicao = (int) (Math.random() * CARACTS.length);
-            var rdm = "" + Math.random();
+            String rdm = "" + Math.random();
             if (rdm.contains(".") && rdm.length() > 3) {
                 rdm = rdm.substring(rdm.indexOf(".") + 1, rdm.indexOf(".") + 2);
             }

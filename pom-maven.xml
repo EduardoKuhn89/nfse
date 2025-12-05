@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>io.github.eduardokuhn89</groupId>
+    <artifactId>nfse-client</artifactId>
+    <version>1.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>NFS-e Client</name>
+    <description>Cliente Java para integração simplificada com a NFS-e Nacional</description>
+    <url>https://github.com/EduardoKuhn89/nfse</url>
+    <inceptionYear>2025</inceptionYear>
+    
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <id>EduardoKuhn89</id>
+            <name>Eduardo Kuhn</name>            
+            <url>https://github.com/EduardoKuhn89</url>
+            <roles>
+                <role>developer</role>
+            </roles>            
+        </developer>
+    </developers>
+    
+    <scm>
+        <connection>scm:git:git://github.com/EduardoKuhn89/nfse.git</connection>
+        <developerConnection>scm:git:ssh://github.com:EduardoKuhn89/nfse.git</developerConnection>
+        <url>https://github.com/EduardoKuhn89/nfse/tree/main</url>
+    </scm>
+    
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/EduardoKuhn89/nfse/issues</url>
+    </issueManagement>
+    
+    <properties>        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        <jaxb.version>2.3.1</jaxb.version>
+        <gson.version>2.11.0</gson.version>
+        <commons-lang3.version>3.19.0</commons-lang3.version>
+        <commons-io.version>2.16.1</commons-io.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <demoiselle-signer.version>4.4.0</demoiselle-signer.version>
+        
+        <maven-compiler.version>3.14.0</maven-compiler.version>
+        <central-publishing-maven.version>0.8.0</central-publishing-maven.version>
+        <maven-gpg.version>3.2.8</maven-gpg.version>        
+        <maven-source.version>3.3.1</maven-source.version>
+        <maven-javadoc.version>3.11.2</maven-javadoc.version>        
+    </properties>
+    
+    <dependencies>
+        
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.3.0.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>        
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.demoiselle.signer/signer-core -->
+        <dependency>
+            <groupId>org.demoiselle.signer</groupId>
+            <artifactId>signer-core</artifactId>
+            <version>${demoiselle-signer.version}</version>
+        </dependency>    
+                               
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg.version}</version>
+                <configuration>
+                    <executable>C:/Program Files/Git/usr/bin/gpg.exe</executable>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcprov-jdk18on</artifactId>
+                        <version>1.78</version> 
+                    </dependency>
+                    <dependency>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcpg-jdk18on</artifactId>
+                        <version>1.78</version> 
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <additionalOptions>-html5</additionalOptions>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central-publishing-maven.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>ossrh</publishingServerId> 
+                    <autoPublish>true</autoPublish>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+    
+
+</project>

@@ -131,13 +131,7 @@ public class GsonUtils {
     }
 
     public static void saveToFile(Object obj, String file) throws IOException {
-        try (var bufferedWriter = FileUtils.bufferedWriter(file)) {
-            builder(false, true).toJson(obj, bufferedWriter);
-        }
-    }
-
-    public static void saveToFile(Object obj, BufferedWriter bufferedWriter) throws IOException {
-        try (bufferedWriter) {
+        try (BufferedWriter bufferedWriter = FileUtils.bufferedWriter(file)) {
             builder(false, true).toJson(obj, bufferedWriter);
         }
     }

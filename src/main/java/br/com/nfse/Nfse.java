@@ -552,7 +552,7 @@ public class Nfse {
         }
 
         private SSLContext createSSLContext() throws Exception {
-            var certificado = this.config.getCertificado();
+            CertificateManager certificado = this.config.getCertificado();
 
             if (certificado.getCertificateBytes() == null || certificado.getCertificateBytes().length == 0) {
                 throw new IllegalStateException("Bytes do certificado não estão disponíveis");
@@ -619,7 +619,7 @@ public class Nfse {
             }
 
             String bodyData = body.string();
-            var result = GsonUtils.deserialize(bodyData, clazz);
+            T result = GsonUtils.deserialize(bodyData, clazz);
 
             if (result instanceof HttpDataAware) {
                 HttpDataAware httpAware = (HttpDataAware) result;

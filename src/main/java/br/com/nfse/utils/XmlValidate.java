@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class XmlValidate implements ErrorHandler {
@@ -22,12 +24,12 @@ public class XmlValidate implements ErrorHandler {
     private static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
     private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
-    private static final List<String> IGNORED_ERROR_PREFIXES = List.of(
+    private static final List<String> IGNORED_ERROR_PREFIXES = Collections.unmodifiableList(Arrays.asList(
             "cvc-enumeration-valid",
             "cvc-pattern-valid",
             "cvc-maxLength-valid",
             "cvc-datatype"
-    );
+    ));
 
     private final List<String> errosList = new ArrayList<>();
     private final String pathSchemas;

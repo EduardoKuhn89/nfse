@@ -22,11 +22,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -204,49 +201,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         }
 
         return sb.toString();
-    }
-
-    public static List<FileDto> descompactarZip(File arquivoZip) throws IOException {
-        List<FileDto> result = new ArrayList<>();
-        Enumeration entries;
-        ZipFile zipFile;
-
-        zipFile = new ZipFile(arquivoZip);
-        entries = zipFile.entries();
-
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = (ZipEntry) entries.nextElement();
-            if (entry.isDirectory()) {
-                continue;
-            }
-
-            String fileName = entry.getName();
-            if (fileName.contains("/")) {
-                fileName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length());
-            } else if (fileName.contains("\\")) {
-                fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.length());
-            }
-
-            FileDto f = new FileDto();
-            f.setNomeFile(fileName);
-
-            if (fileName.contains(".")) {
-                f.setExtencao(fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()).trim());
-            } else {
-                f.setExtencao("");
-            }
-
-            InputStream source = zipFile.getInputStream(entry);
-            try {
-                f.setBytes(source.readAllBytes());
-            } finally {
-                IOUtils.closeQuietly(source);
-            }
-            result.add(f);
-            //copyInputStream(zipFile.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(dir + entry.getName())));
-        }
-        zipFile.close();
-        return result;
     }
 
     public static class FileDto {

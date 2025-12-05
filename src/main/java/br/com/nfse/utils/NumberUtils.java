@@ -39,17 +39,6 @@ public class NumberUtils {
         return decimalFormat.format(valor);
     }
 
-    public static String formatPersonalizado(BigDecimal valor, Integer nCasasDecimais) {
-        String padrao = "#,##0." + "0".repeat(nCasasDecimais);
-
-        DecimalFormatSymbols df = new DecimalFormatSymbols();
-        df.setDecimalSeparator(',');
-        //df.setGroupingSeparator('.');
-        DecimalFormat decimalFormat = new DecimalFormat(padrao, df);
-        return decimalFormat.format(valor);
-
-    }
-
     public static BigDecimal isNumber(String value) {
         if (value == null || value.isEmpty()) {
             return null;
