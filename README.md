@@ -14,11 +14,11 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
 
 ## ✨ Repositório
 
-<dependency>
-    <groupId>io.github.eduardokuhn89</groupId>
-    <artifactId>nfse-client</artifactId>
-    <version>1.1.0</version>
-</dependency>
+    <dependency>
+        <groupId>io.github.eduardokuhn89</groupId>
+        <artifactId>nfse-client</artifactId>
+        <version>1.1.0</version>
+    </dependency>
 
 ## ✨ Exemplo de uso
 
