@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -34,8 +34,8 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;/simpleType>
  *         &lt;/element>
  *         &lt;element name="CPFAgTrib" type="{http://www.sped.fazenda.gov.br/nfse}TSCPF"/>
- *         &lt;element name="xMotivo" type="{http://www.sped.fazenda.gov.br/nfse}TSMotivo"/>
  *         &lt;element name="codEvento" type="{http://www.sped.fazenda.gov.br/nfse}TSCodigoEventoNFSe"/>
+ *         &lt;element name="xMotivo" type="{http://www.sped.fazenda.gov.br/nfse}TSMotivo"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -48,8 +48,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "TE305102", propOrder = {
     "xDesc",
     "cpfAgTrib",
-    "xMotivo",
-    "codEvento"
+    "codEvento",
+    "xMotivo"
 })
 public class TE305102 {
 
@@ -58,10 +58,10 @@ public class TE305102 {
     @XmlElement(name = "CPFAgTrib", required = true)
     protected String cpfAgTrib;
     @XmlElement(required = true)
-    protected String xMotivo;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "string")
     protected TSCodigoEventoNFSe codEvento;
+    @XmlElement(required = true)
+    protected String xMotivo;
 
     /**
      * Obtém o valor da propriedade xDesc.
@@ -112,30 +112,6 @@ public class TE305102 {
     }
 
     /**
-     * Obtém o valor da propriedade xMotivo.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getXMotivo() {
-        return xMotivo;
-    }
-
-    /**
-     * Define o valor da propriedade xMotivo.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setXMotivo(String value) {
-        this.xMotivo = value;
-    }
-
-    /**
      * Obtém o valor da propriedade codEvento.
      * 
      * @return
@@ -157,6 +133,30 @@ public class TE305102 {
      */
     public void setCodEvento(TSCodigoEventoNFSe value) {
         this.codEvento = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade xMotivo.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getXMotivo() {
+        return xMotivo;
+    }
+
+    /**
+     * Define o valor da propriedade xMotivo.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setXMotivo(String value) {
+        this.xMotivo = value;
     }
 
 }

@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *               &lt;whiteSpace value="preserve"/>
- *               &lt;enumeration value="Confirmação do Prestador"/>
+ *               &lt;enumeration value="Manifestação de NFS-e - Confirmação do Prestador"/>
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>

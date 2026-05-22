@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -28,11 +28,12 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *               &lt;whiteSpace value="preserve"/>
- *               &lt;enumeration value="Rejeição do Tomador"/>
+ *               &lt;enumeration value="Manifestação de NFS-e - Rejeição do Tomador"/>
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="infRej" type="{http://www.sped.fazenda.gov.br/nfse}TCInfoEventoRejeicao"/>
+ *         &lt;element name="cMotivo" type="{http://www.sped.fazenda.gov.br/nfse}TSCodMotivoRejeicao"/>
+ *         &lt;element name="xMotivo" type="{http://www.sped.fazenda.gov.br/nfse}TSMotivo" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -44,14 +45,16 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TE203206", propOrder = {
     "xDesc",
-    "infRej"
+    "cMotivo",
+    "xMotivo"
 })
 public class TE203206 {
 
     @XmlElement(required = true)
     protected String xDesc;
     @XmlElement(required = true)
-    protected TCInfoEventoRejeicao infRej;
+    protected String cMotivo;
+    protected String xMotivo;
 
     /**
      * Obtém o valor da propriedade xDesc.
@@ -78,27 +81,51 @@ public class TE203206 {
     }
 
     /**
-     * Obtém o valor da propriedade infRej.
+     * Obtém o valor da propriedade cMotivo.
      * 
      * @return
      *     possible object is
-     *     {@link TCInfoEventoRejeicao }
+     *     {@link String }
      *     
      */
-    public TCInfoEventoRejeicao getInfRej() {
-        return infRej;
+    public String getCMotivo() {
+        return cMotivo;
     }
 
     /**
-     * Define o valor da propriedade infRej.
+     * Define o valor da propriedade cMotivo.
      * 
      * @param value
      *     allowed object is
-     *     {@link TCInfoEventoRejeicao }
+     *     {@link String }
      *     
      */
-    public void setInfRej(TCInfoEventoRejeicao value) {
-        this.infRej = value;
+    public void setCMotivo(String value) {
+        this.cMotivo = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade xMotivo.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getXMotivo() {
+        return xMotivo;
+    }
+
+    /**
+     * Define o valor da propriedade xMotivo.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setXMotivo(String value) {
+        this.xMotivo = value;
     }
 
 }

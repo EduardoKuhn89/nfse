@@ -90,7 +90,17 @@ public class XmlUtils {
         return xml;
     }
 
-    public static String gZipToXml(byte[] data) throws IOException {
+    public static String gZipToXml(String gzipB64) throws Exception {
+        if (gzipB64 == null || gzipB64.isEmpty()) {
+            return "";
+        }
+
+        byte[] data = Base64.getDecoder().decode(gzipB64.trim());
+
+        return gZipToXml(data);
+    }
+
+    public static String gZipToXml(byte[] data) throws Exception {
         if (data == null || data.length == 0) {
             return "";
         }

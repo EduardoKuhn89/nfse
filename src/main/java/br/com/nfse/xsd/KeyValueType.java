@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -49,8 +49,8 @@ import org.w3c.dom.Element;
 public class KeyValueType {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "RSAKeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "DSAKeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#", type = JAXBElement.class, required = false)
+        @XmlElementRef(name = "DSAKeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#", type = JAXBElement.class, required = false),
+        @XmlElementRef(name = "RSAKeyValue", namespace = "http://www.w3.org/2000/09/xmldsig#", type = JAXBElement.class, required = false)
     })
     @XmlMixed
     @XmlAnyElement(lax = true)
@@ -74,11 +74,11 @@ public class KeyValueType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Element }
-     * {@link String }
-     * {@link Object }
-     * {@link JAXBElement }{@code <}{@link RSAKeyValueType }{@code >}
      * {@link JAXBElement }{@code <}{@link DSAKeyValueType }{@code >}
+     * {@link JAXBElement }{@code <}{@link RSAKeyValueType }{@code >}
+     * {@link Object }
+     * {@link String }
+     * {@link Element }
      * 
      * 
      */

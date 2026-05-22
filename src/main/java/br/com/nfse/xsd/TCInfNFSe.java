@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="nDFSe" type="{http://www.sped.fazenda.gov.br/nfse}TSNDFSe"/>
  *         &lt;element name="emit" type="{http://www.sped.fazenda.gov.br/nfse}TCEmitente"/>
  *         &lt;element name="valores" type="{http://www.sped.fazenda.gov.br/nfse}TCValoresNFSe"/>
+ *         &lt;element name="xOutInf" type="{http://www.sped.fazenda.gov.br/nfse}TSDesc2000" minOccurs="0"/>
  *         &lt;element name="IBSCBS" type="{http://www.sped.fazenda.gov.br/nfse}TCRTCIBSCBS" minOccurs="0"/>
  *         &lt;element name="DPS" type="{http://www.sped.fazenda.gov.br/nfse}TCDPS"/>
  *       &lt;/sequence>
@@ -72,6 +73,7 @@ import javax.xml.bind.annotation.XmlType;
     "ndfSe",
     "emit",
     "valores",
+    "xOutInf",
     "ibscbs",
     "dps"
 })
@@ -107,6 +109,7 @@ public class TCInfNFSe {
     protected TCEmitente emit;
     @XmlElement(required = true)
     protected TCValoresNFSe valores;
+    protected String xOutInf;
     @XmlElement(name = "IBSCBS")
     protected TCRTCIBSCBS ibscbs;
     @XmlElement(name = "DPS", required = true)
@@ -520,6 +523,30 @@ public class TCInfNFSe {
      */
     public void setValores(TCValoresNFSe value) {
         this.valores = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade xOutInf.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getXOutInf() {
+        return xOutInf;
+    }
+
+    /**
+     * Define o valor da propriedade xOutInf.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setXOutInf(String value) {
+        this.xOutInf = value;
     }
 
     /**

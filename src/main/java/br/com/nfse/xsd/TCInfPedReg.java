@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;element name="CPFAutor" type="{http://www.sped.fazenda.gov.br/nfse}TSCPF"/>
  *         &lt;/choice>
  *         &lt;element name="chNFSe" type="{http://www.sped.fazenda.gov.br/nfse}TSChaveNFSe"/>
- *         &lt;element name="nPedRegEvento" type="{http://www.sped.fazenda.gov.br/nfse}TSNum3Dig"/>
  *         &lt;choice>
  *           &lt;element name="e101101" type="{http://www.sped.fazenda.gov.br/nfse}TE101101"/>
  *           &lt;element name="e105102" type="{http://www.sped.fazenda.gov.br/nfse}TE105102"/>
@@ -53,7 +52,7 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;element name="e305103" type="{http://www.sped.fazenda.gov.br/nfse}TE305103"/>
  *         &lt;/choice>
  *       &lt;/sequence>
- *       &lt;attribute name="Id" use="required" type="{http://www.sped.fazenda.gov.br/nfse}TSIdPedRefEvt" />
+ *       &lt;attribute name="Id" use="required" type="{http://www.sped.fazenda.gov.br/nfse}TSIdPedRegEvt" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -69,7 +68,6 @@ import javax.xml.bind.annotation.XmlType;
     "cnpjAutor",
     "cpfAutor",
     "chNFSe",
-    "nPedRegEvento",
     "e101101",
     "e105102",
     "e101103",
@@ -101,8 +99,6 @@ public class TCInfPedReg {
     protected String cpfAutor;
     @XmlElement(required = true)
     protected String chNFSe;
-    @XmlElement(required = true)
-    protected String nPedRegEvento;
     protected TE101101 e101101;
     protected TE105102 e105102;
     protected TE101103 e101103;
@@ -264,30 +260,6 @@ public class TCInfPedReg {
      */
     public void setChNFSe(String value) {
         this.chNFSe = value;
-    }
-
-    /**
-     * Obtém o valor da propriedade nPedRegEvento.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getNPedRegEvento() {
-        return nPedRegEvento;
-    }
-
-    /**
-     * Define o valor da propriedade nPedRegEvento.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setNPedRegEvento(String value) {
-        this.nPedRegEvento = value;
     }
 
     /**

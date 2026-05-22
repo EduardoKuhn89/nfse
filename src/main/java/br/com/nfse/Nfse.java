@@ -8,6 +8,7 @@ import br.com.nfse.dto.NFSeResult;
 import br.com.nfse.dto.enuns.AmbienteEnum;
 import br.com.nfse.dto.enuns.TipoServicoEnum;
 import br.com.nfse.utils.DateUtils;
+import br.com.nfse.utils.OkHttpUtils;
 import br.com.nfse.utils.StringUtils;
 import br.com.nfse.utils.XmlSigner;
 import br.com.nfse.utils.XmlUtils;
@@ -23,18 +24,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import javax.net.ssl.*;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.security.*;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.RequestBody;
@@ -261,7 +256,7 @@ public class Nfse {
          * tipo/código do evento aceito pela SEFAZ
          *
          * @param evt -> TE305101, TE101103 ...
-         * @param nPedRegEvento -> Nº. Sequencial (geralmente 1)
+         * @param nPedRegEvento ??? -> Nº. Sequencial (geralmente 1)
          * @return EventoResult
          * @throws java.lang.Exception
          */
@@ -275,7 +270,7 @@ public class Nfse {
                     config.getAmbiente(),
                     autor,
                     chNFSe,
-                    pedRegEvento,
+                    //pedRegEvento,
                     dhEvento
             );
 
@@ -336,12 +331,50 @@ public class Nfse {
             }
         }
 
-        public byte[] danfse() throws Exception {
+        @Deprecated
+        /* O método de obter a DANFSE via API será descontinuada pela ADN
+        //https://forum.nfsebrasil.com.br/t/geracao-de-pdf-das-nfs-e-nao-esta-funcionando/741/20
+        //https://www.gov.br/nfse/pt-br/noticias/se-cgnfs-e-publica-nota-tecnica-no-008-2026-com-regras-para-emissao-do-danfse
+         */
+        public byte[] danfseDownload() throws Exception {
             validateConfig();
             validateChNFSe();
 
-            String urlBase = this.getService(this.config.getAmbiente(), TipoServicoEnum.ADN);
-            String url = String.format("%s/danfse/%s", urlBase, this.chNFSe.trim());
+            String urlNota = "https://www.nfse.gov.br/EmissorNacional/Notas/Download/DANFSe/" + this.chNFSe.trim();
+
+            OkHttpClient client = createHttpClient();
+
+            //autenticar com o certificado
+            Request loginRequest = new Request.Builder()
+                    .url("https://www.nfse.gov.br/EmissorNacional/Certificado")
+                    .get()
+                    .build();
+
+            try (Response loginResponse = client.newCall(loginRequest).execute()) {
+                //retorna 200 ou 302, os cookies foram salvos no CookieJar automaticamente
+                System.out.println("Login status: " + loginResponse.code());
+            }
+
+            //baixar a nota usando a mesma instância do 'client'
+            Request downloadRequest = new Request.Builder()
+                    .url(urlNota)
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                    .get()
+                    .build();
+
+            try (Response response = client.newCall(downloadRequest).execute()) {
+                if (response.header("Content-Type").contains("pdf")) {
+                    //binário do PDF
+                    return response.body().bytes();
+                } else {
+                    //ainda está mandando HTML (verifique os cookies)
+                    System.out.println("Ainda recebendo HTML. Verifique se o certificado tem permissão.");
+                    return null;
+                }
+            }
+
+            /*String urlBase = this.getService(this.config.getAmbiente(), TipoServicoEnum.ADN);
+            String url = String.format("%s/danfse/%s", urlBase, this.chNFSe.trim());            
 
             OkHttpClient client = this.createHttpClient();
 
@@ -361,7 +394,7 @@ public class Nfse {
                 }
 
                 return body.bytes();
-            }
+            }*/
         }
 
         public NFSeResult consultaChaveNFSe() throws Exception {
@@ -444,7 +477,7 @@ public class Nfse {
                 infPedReg.setCPFAutor(autor.getCpfAutor());
             }
             infPedReg.setChNFSe(chNFSe);
-            infPedReg.setNPedRegEvento(nPedRegEvento);
+            //infPedReg.setNPedRegEvento(nPedRegEvento);
 
             TE101101 e101101 = new TE101101();
             e101101.setXDesc("Cancelamento de NFS-e");
@@ -458,7 +491,7 @@ public class Nfse {
             return pedRegEvt;
         }
 
-        private TCInfPedReg criarInfEvento(AmbienteEnum ambiente, AutorEvento autor, String chNFSe, String nPedRegEvento, ZonedDateTime dhEvento) {
+        private TCInfPedReg criarInfEvento(AmbienteEnum ambiente, AutorEvento autor, String chNFSe, ZonedDateTime dhEvento) {
 
             TCPedRegEvt pedRegEvt = new TCPedRegEvt();
             pedRegEvt.setVersao("1.00");
@@ -474,7 +507,7 @@ public class Nfse {
                 infPedReg.setCPFAutor(autor.getCpfAutor());
             }
             infPedReg.setChNFSe(chNFSe);
-            infPedReg.setNPedRegEvento(nPedRegEvento);
+            //infPedReg.setNPedRegEvento(nPedRegEvento);
 
             pedRegEvt.setInfPedReg(infPedReg);
 
@@ -527,95 +560,10 @@ public class Nfse {
             return chave;
         }
 
-        private OkHttpClient createHttpClient() throws Exception {
-            if (this.httpClient != null) {
-                return this.httpClient;
-            }
-
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .protocols(Collections.singletonList(httpProtocol))
-                    .connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                    .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                    .writeTimeout(timeoutSeconds, TimeUnit.SECONDS);
-
-            //configurar SSL/TLS do certificado para o autenticação
-            createSslFactory(clientBuilder);
-
-            return clientBuilder.build();
-        }
-
-        private void createSslFactory(OkHttpClient.Builder clientBuilder) throws Exception {
-            SSLContext sslContext = createSSLContext();
-            X509TrustManager trustManager = getTrustManagerDefault();
-
-            clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-        }
-
-        private SSLContext createSSLContext() throws Exception {
-            CertificateManager certificado = this.config.getCertificado();
-
-            if (certificado.getCertificateBytes() == null || certificado.getCertificateBytes().length == 0) {
-                throw new IllegalStateException("Bytes do certificado não estão disponíveis");
-            }
-
-            KeyStore ks = loadKeyStore(certificado);
-
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-
-            kmf.init(ks, certificado.getPassword().toCharArray());
-
-            // Usar protocolo SSL especificado ou TLS como padrão
-            String sslProtocol = certificado.getProtocol() != null ? certificado.getProtocol() : "TLS";
-
-            SSLContext sslContext = SSLContext.getInstance(sslProtocol);
-            sslContext.init(kmf.getKeyManagers(), null, new SecureRandom());
-
-            return sslContext;
-        }
-
-        private KeyStore loadKeyStore(CertificateManager certificado) throws Exception {
-            String tipoKeyStore = "PKCS12";
-
-            KeyStore ks;
-            if (certificado.getProvider() != null) {
-                ks = KeyStore.getInstance(tipoKeyStore, certificado.getProvider());
-            } else {
-                ks = KeyStore.getInstance(tipoKeyStore);
-            }
-
-            try (InputStream certStream = new ByteArrayInputStream(certificado.getCertificateBytes())) {
-                ks.load(certStream, certificado.getPassword().toCharArray());
-            }
-
-            return ks;
-        }
-
-        private X509TrustManager getTrustManagerDefault() {
-            try {
-                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-                        TrustManagerFactory.getDefaultAlgorithm());
-                trustManagerFactory.init((KeyStore) null);
-                TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-                if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-                    throw new IllegalStateException("Unexpected default trust managers:" + java.util.Arrays.toString(trustManagers));
-                }
-                return (X509TrustManager) trustManagers[0];
-            } catch (IllegalStateException | KeyStoreException | NoSuchAlgorithmException e) {
-                throw new RuntimeException("Erro ao obter TrustManager padrão", e);
-            }
-        }
-
-        private String buildErrorMessage(Response response) {
-            return String.format("Erro HTTP %d: %s - URL: %s",
-                    response.code(),
-                    response.message(),
-                    response.request().url());
-        }
-
         private <T> T toResponseResult(Response response, Class<T> clazz) throws IOException {
             ResponseBody body = response.body();
             if (body == null) {
-                throw new IOException(buildErrorMessage(response));
+                throw new IOException(OkHttpUtils.buildErrorMessage(response));
             }
 
             String bodyData = body.string();
@@ -632,6 +580,17 @@ public class Nfse {
             }
 
             return result;
+        }
+
+        private OkHttpClient createHttpClient() throws Exception {
+            OkHttpClient client = OkHttpUtils.createHttpClient(
+                    this.httpClient,
+                    this.config.getCertificado(),
+                    this.httpProtocol,
+                    this.timeoutSeconds
+            );
+
+            return client;
         }
 
     }

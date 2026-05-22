@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="cLocalidadeIncid" type="{http://www.sped.fazenda.gov.br/nfse}TSCodMunIBGE"/>
  *         &lt;element name="xLocalidadeIncid" type="{http://www.sped.fazenda.gov.br/nfse}TSDesc600"/>
- *         &lt;element name="pRedutor" type="{http://www.sped.fazenda.gov.br/nfse}TSDec2V2"/>
+ *         &lt;element name="pRedutor" type="{http://www.sped.fazenda.gov.br/nfse}TSDec2V2" minOccurs="0"/>
  *         &lt;element name="valores" type="{http://www.sped.fazenda.gov.br/nfse}TCRTCValoresIBSCBS"/>
  *         &lt;element name="totCIBS" type="{http://www.sped.fazenda.gov.br/nfse}TCRTCTotalCIBS"/>
  *       &lt;/sequence>
@@ -51,7 +51,6 @@ public class TCRTCIBSCBS {
     protected String cLocalidadeIncid;
     @XmlElement(required = true)
     protected String xLocalidadeIncid;
-    @XmlElement(required = true)
     protected String pRedutor;
     @XmlElement(required = true)
     protected TCRTCValoresIBSCBS valores;
