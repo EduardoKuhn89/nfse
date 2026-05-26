@@ -8,6 +8,8 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
 - 📄 Emissão, consulta e cancelamento de NFS-e  
 - 🔐 Suporte a autenticação via certificado digital A1  
 - 🧩 Serialização e desserialização automática dos modelos JSON
+- 🔍 Consulta/distribuição das NFS-e em lote ou individual 
+- 📜 Geração da DANFSe
 
 ## ✨ Documentação técnica
 - 🔗 https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica 
@@ -39,3 +41,26 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
           .assinar(true)
           .validar(true)
           .enviarDps(dps);
+
+    DFeResult result = NfseDistrib.builder()
+          .config(config)
+          .consultarPorUltimoNSU(0L);          
+
+    String xml = Nfse.builder()
+          .config(config)
+          .chNFSe(CH_NFSE_TESTE)
+          .consultaXml()
+          .getNfseXml();          
+
+    byte[] pdf = DanfseGenerator.builder()
+          .xml(xml)
+          .xTributacao("Descrição do Código de Tributação Nacional / Municipal")
+          .xMunicipioPrestacao("Nome do Município do Prestador")
+          .xUfPrestacao("RS")
+          .xPaisPrestacao("Brasil")
+          .xUfIncidenciaIbsCbs("RS")
+          .xMunicipioTomador("Nome do Município do Tomador")
+          .xUfTomador("RS")
+          .cancelada(false)
+          //.imgPrefeitura(logoPrefeitura)      
+          .generate();          
