@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -28,11 +28,13 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;simpleType>
  *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *               &lt;whiteSpace value="preserve"/>
- *               &lt;enumeration value="Anulação da Rejeição"/>
+ *               &lt;enumeration value="Manifestação de NFS-e - Anulação da Rejeição"/>
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="infAnRej" type="{http://www.sped.fazenda.gov.br/nfse}TCInfoEventoAnulacaoRejeicao"/>
+ *         &lt;element name="CPFAgTrib" type="{http://www.sped.fazenda.gov.br/nfse}TSCPF"/>
+ *         &lt;element name="idEvManifRej" type="{http://www.sped.fazenda.gov.br/nfse}TSIdNumEvento"/>
+ *         &lt;element name="xMotivo" type="{http://www.sped.fazenda.gov.br/nfse}TSMotivo"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -44,14 +46,20 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TE205208", propOrder = {
     "xDesc",
-    "infAnRej"
+    "cpfAgTrib",
+    "idEvManifRej",
+    "xMotivo"
 })
 public class TE205208 {
 
     @XmlElement(required = true)
     protected String xDesc;
+    @XmlElement(name = "CPFAgTrib", required = true)
+    protected String cpfAgTrib;
     @XmlElement(required = true)
-    protected TCInfoEventoAnulacaoRejeicao infAnRej;
+    protected String idEvManifRej;
+    @XmlElement(required = true)
+    protected String xMotivo;
 
     /**
      * Obtém o valor da propriedade xDesc.
@@ -78,27 +86,75 @@ public class TE205208 {
     }
 
     /**
-     * Obtém o valor da propriedade infAnRej.
+     * Obtém o valor da propriedade cpfAgTrib.
      * 
      * @return
      *     possible object is
-     *     {@link TCInfoEventoAnulacaoRejeicao }
+     *     {@link String }
      *     
      */
-    public TCInfoEventoAnulacaoRejeicao getInfAnRej() {
-        return infAnRej;
+    public String getCPFAgTrib() {
+        return cpfAgTrib;
     }
 
     /**
-     * Define o valor da propriedade infAnRej.
+     * Define o valor da propriedade cpfAgTrib.
      * 
      * @param value
      *     allowed object is
-     *     {@link TCInfoEventoAnulacaoRejeicao }
+     *     {@link String }
      *     
      */
-    public void setInfAnRej(TCInfoEventoAnulacaoRejeicao value) {
-        this.infAnRej = value;
+    public void setCPFAgTrib(String value) {
+        this.cpfAgTrib = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade idEvManifRej.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getIdEvManifRej() {
+        return idEvManifRej;
+    }
+
+    /**
+     * Define o valor da propriedade idEvManifRej.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setIdEvManifRej(String value) {
+        this.idEvManifRej = value;
+    }
+
+    /**
+     * Obtém o valor da propriedade xMotivo.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getXMotivo() {
+        return xMotivo;
+    }
+
+    /**
+     * Define o valor da propriedade xMotivo.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setXMotivo(String value) {
+        this.xMotivo = value;
     }
 
 }

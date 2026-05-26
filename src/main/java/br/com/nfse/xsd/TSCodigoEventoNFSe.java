@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -26,8 +26,6 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;enumeration value="e105104"/>
  *     &lt;enumeration value="e105105"/>
  *     &lt;enumeration value="e305101"/>
- *     &lt;enumeration value="e907202"/>
- *     &lt;enumeration value="e967203"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -46,11 +44,7 @@ public enum TSCodigoEventoNFSe {
     @XmlEnumValue("e105105")
     E_105105("e105105"),
     @XmlEnumValue("e305101")
-    E_305101("e305101"),
-    @XmlEnumValue("e907202")
-    E_907202("e907202"),
-    @XmlEnumValue("e967203")
-    E_967203("e967203");
+    E_305101("e305101");
     private final String value;
 
     TSCodigoEventoNFSe(String v) {

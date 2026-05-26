@@ -1,11 +1,14 @@
 
 import br.com.nfse.CertificateManager;
 import br.com.nfse.ConfigManager;
+import br.com.nfse.DanfseGenerator;
 import br.com.nfse.Nfse;
+import br.com.nfse.NfseDistrib;
 import br.com.nfse.dto.AutorEvento;
 import br.com.nfse.dto.ConvenioResult;
 import br.com.nfse.dto.EventoResult;
 import br.com.nfse.dto.NFSeResult;
+import br.com.nfse.dto.DFeResult;
 import br.com.nfse.dto.enuns.AmbienteEnum;
 import br.com.nfse.utils.DateUtils;
 import br.com.nfse.utils.FileUtils;
@@ -22,16 +25,19 @@ import java.util.*;
 public class Test {
 
     private static final String CERT_PATH = "C:\\ZTEMP\\target.pfx";
-    private static final String CERT_PASSWORD = "*****";
+    private static final String CERT_PASSWORD = "****";
     private static final String SCHEMAS_PATH = "C:\\GitHub\\nfse\\schemas\\1.01\\PL_NFSE_NT04_RTCv101";
     private static final String CH_NFSE_TESTE = "43172021293234012000161000000000000525080000000000";
+    private static final String CNPJ_TESTE = "93234012000161";
 
     public enum TipoTeste {
-        ENVIO("E", "Envio de DPS"),
-        CONVENIO("C", "Consulta Convênio"),
-        DANFSE("D", "Geração DANFSe"),
-        CANCELAMENTO("X", "Cancelamento NFSe"),
-        EVENTO("Y", "Envio de Evento"),
+        ENVIO("ENVIO", "Envio de DPS"),
+        CONVENIO("CONVENIO", "Consulta Convênio"),
+        DANFSE_OLD("DANFSE_OLD", "Geração DANFSe (OLD)"),
+        DANFSE("DANFSE", "Geração DANFSe"),
+        CANCELAMENTO("CANCELAMENTO", "Cancelamento NFSe"),
+        EVENTO("EVENTO", "Envio de Evento"),
+        DISTRIB("DISTRIB", "Distribuição DFe"),
         TODOS("ALL", "Executar Todos os Testes");
 
         private final String codigo;
@@ -59,7 +65,7 @@ public class Test {
 
     public static void main(String[] args) {
         try {
-            String testCode = args.length > 0 ? args[0] : "ALL";
+            String testCode = args.length > 0 ? args[0] : "DANFSE";
 
             ConfigManager config = buildConfig();
             TestRunner runner = new TestRunner(config);
@@ -122,6 +128,11 @@ public class Test {
                     this::testConvenio
             ));
 
+            map.put(TipoTeste.DANFSE_OLD, new TestCase(
+                    "Geração DANFSe (OLD)",
+                    this::testDanfseOld
+            ));
+
             map.put(TipoTeste.DANFSE, new TestCase(
                     "Geração DANFSe",
                     this::testDanfse
@@ -135,6 +146,11 @@ public class Test {
             map.put(TipoTeste.EVENTO, new TestCase(
                     "Envio Evento",
                     this::testEvento
+            ));
+
+            map.put(TipoTeste.DISTRIB, new TestCase(
+                    "Distribuição DFe",
+                    this::testDistrib
             ));
 
             return map;
@@ -189,14 +205,50 @@ public class Test {
             System.out.println(result);
         }
 
-        private void testDanfse() throws Exception {
+        private void testDistrib() throws Exception {
+            long ultimoNSU = 0;
+
+            DFeResult result = NfseDistrib.builder()
+                    .config(config)
+                    .consultarPorUltimoNSU(ultimoNSU);
+
+            System.out.println(" Resultado da distribuição:");
+            System.out.println(result.toString());
+        }
+
+        private void testDanfseOld() throws Exception {
             byte[] pdf = Nfse.builder()
                     .config(config)
-                    .chNFSe("43172021293234012000161000000000000525080000000000")
-                    .danfse();
+                    .chNFSe(CH_NFSE_TESTE)
+                    .danfseDownload();
 
             String caminho = FileUtils.getTempDir() + "danfse_test.pdf";
             FileUtils.saveToFileTemp(pdf, caminho);
+            System.out.println(" DANFSe gerado: " + caminho);
+        }
+
+        private void testDanfse() throws Exception {
+            String xml = Nfse.builder()
+                    .config(config)
+                    .chNFSe(CH_NFSE_TESTE)
+                    .consultaXml()
+                    .getNfseXml();
+
+            byte[] pdf = DanfseGenerator.builder()
+                    .xml(xml)
+                    .xTributacao("Contabilidade, inclusive serviços técnicos e auxiliares.")
+                    .xMunicipioPrestacao("Santa Rosa")
+                    .xUfPrestacao("RS")
+                    .xPaisPrestacao("Brasil")
+                    .xUfIncidenciaIbsCbs("RS")
+                    .xMunicipioTomador("Nome do Município")
+                    .xUfTomador("RS")
+                    .cancelada(false)
+                    //.imgPrefeitura(logoPrefeitura)      
+                    .generate();
+
+            String caminho = FileUtils.getTempDir() + "danfse_test.pdf";
+            FileUtils.saveToFile(pdf, caminho);
             System.out.println(" DANFSe gerado: " + caminho);
         }
 
@@ -204,7 +256,7 @@ public class Test {
             EventoResult result = Nfse.builder()
                     .config(config)
                     .chNFSe(CH_NFSE_TESTE)
-                    .autor(AutorEvento.cnpj("93234012000161"))
+                    .autor(AutorEvento.cnpj(CNPJ_TESTE))
                     .dhEvento(ZonedDateTime.now())
                     .cancelar("2", "Teste de Cancelamento - Serviço não prestado");
 
@@ -222,7 +274,7 @@ public class Test {
             EventoResult result = Nfse.builder()
                     .config(config)
                     .chNFSe(CH_NFSE_TESTE)
-                    .autor(AutorEvento.cnpj("93234012000161"))
+                    .autor(AutorEvento.cnpj(CNPJ_TESTE))
                     .dhEvento(ZonedDateTime.now())
                     .evento(evento, 1);
 
@@ -324,7 +376,7 @@ public class Test {
 
         public static TCInfoPrestador criar() {
             TCInfoPrestador prest = new TCInfoPrestador();
-            prest.setCNPJ("93234012000161");
+            prest.setCNPJ(CNPJ_TESTE);
             prest.setIM("55555");
             prest.setXNome("NOME EMPRESA LTDA");
             prest.setEnd(criarEndereco());

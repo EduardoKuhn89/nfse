@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -32,7 +32,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="vISSQN" type="{http://www.sped.fazenda.gov.br/nfse}TSDec15V2" minOccurs="0"/>
  *         &lt;element name="vTotalRet" type="{http://www.sped.fazenda.gov.br/nfse}TSDec15V2" minOccurs="0"/>
  *         &lt;element name="vLiq" type="{http://www.sped.fazenda.gov.br/nfse}TSDec15V2"/>
- *         &lt;element name="xOutInf" type="{http://www.sped.fazenda.gov.br/nfse}TSDesc2000" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -50,8 +49,7 @@ import javax.xml.bind.annotation.XmlType;
     "pAliqAplic",
     "vissqn",
     "vTotalRet",
-    "vLiq",
-    "xOutInf"
+    "vLiq"
 })
 public class TCValoresNFSe {
 
@@ -66,7 +64,6 @@ public class TCValoresNFSe {
     protected String vTotalRet;
     @XmlElement(required = true)
     protected String vLiq;
-    protected String xOutInf;
 
     /**
      * Obtém o valor da propriedade vCalcDR.
@@ -258,30 +255,6 @@ public class TCValoresNFSe {
      */
     public void setVLiq(String value) {
         this.vLiq = value;
-    }
-
-    /**
-     * Obtém o valor da propriedade xOutInf.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getXOutInf() {
-        return xOutInf;
-    }
-
-    /**
-     * Define o valor da propriedade xOutInf.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setXOutInf(String value) {
-        this.xOutInf = value;
     }
 
 }

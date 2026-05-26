@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -27,10 +27,8 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="locPrest" type="{http://www.sped.fazenda.gov.br/nfse}TCLocPrest"/>
  *         &lt;element name="cServ" type="{http://www.sped.fazenda.gov.br/nfse}TCCServ"/>
  *         &lt;element name="comExt" type="{http://www.sped.fazenda.gov.br/nfse}TCComExterior" minOccurs="0"/>
- *         &lt;element name="lsadppu" type="{http://www.sped.fazenda.gov.br/nfse}TCLocacaoSublocacao" minOccurs="0"/>
  *         &lt;element name="obra" type="{http://www.sped.fazenda.gov.br/nfse}TCInfoObra" minOccurs="0"/>
  *         &lt;element name="atvEvento" type="{http://www.sped.fazenda.gov.br/nfse}TCAtvEvento" minOccurs="0"/>
- *         &lt;element name="explRod" type="{http://www.sped.fazenda.gov.br/nfse}TCExploracaoRodoviaria" minOccurs="0"/>
  *         &lt;element name="infoCompl" type="{http://www.sped.fazenda.gov.br/nfse}TCInfoCompl" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -45,10 +43,8 @@ import javax.xml.bind.annotation.XmlType;
     "locPrest",
     "cServ",
     "comExt",
-    "lsadppu",
     "obra",
     "atvEvento",
-    "explRod",
     "infoCompl"
 })
 public class TCServ {
@@ -58,10 +54,8 @@ public class TCServ {
     @XmlElement(required = true)
     protected TCCServ cServ;
     protected TCComExterior comExt;
-    protected TCLocacaoSublocacao lsadppu;
     protected TCInfoObra obra;
     protected TCAtvEvento atvEvento;
-    protected TCExploracaoRodoviaria explRod;
     protected TCInfoCompl infoCompl;
 
     /**
@@ -137,30 +131,6 @@ public class TCServ {
     }
 
     /**
-     * Obtém o valor da propriedade lsadppu.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TCLocacaoSublocacao }
-     *     
-     */
-    public TCLocacaoSublocacao getLsadppu() {
-        return lsadppu;
-    }
-
-    /**
-     * Define o valor da propriedade lsadppu.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TCLocacaoSublocacao }
-     *     
-     */
-    public void setLsadppu(TCLocacaoSublocacao value) {
-        this.lsadppu = value;
-    }
-
-    /**
      * Obtém o valor da propriedade obra.
      * 
      * @return
@@ -206,30 +176,6 @@ public class TCServ {
      */
     public void setAtvEvento(TCAtvEvento value) {
         this.atvEvento = value;
-    }
-
-    /**
-     * Obtém o valor da propriedade explRod.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TCExploracaoRodoviaria }
-     *     
-     */
-    public TCExploracaoRodoviaria getExplRod() {
-        return explRod;
-    }
-
-    /**
-     * Define o valor da propriedade explRod.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TCExploracaoRodoviaria }
-     *     
-     */
-    public void setExplRod(TCExploracaoRodoviaria value) {
-        this.explRod = value;
     }
 
     /**

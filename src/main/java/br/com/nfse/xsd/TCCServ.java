@@ -2,7 +2,7 @@
 // Este arquivo foi gerado pela Arquitetura JavaTM para Implementação de Referência (JAXB) de Bind XML, v2.2.8-b130911.1802 
 // Consulte <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas as modificações neste arquivo serão perdidas após a recompilação do esquema de origem. 
-// Gerado em: 2025.11.28 às 01:51:46 PM BRT 
+// Gerado em: 2026.05.20 às 09:26:40 AM BRT 
 //
 
 
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="cTribNac" type="{http://www.sped.fazenda.gov.br/nfse}TSCodTribNac"/>
  *         &lt;element name="cTribMun" type="{http://www.sped.fazenda.gov.br/nfse}TCCodTribMun" minOccurs="0"/>
  *         &lt;element name="xDescServ" type="{http://www.sped.fazenda.gov.br/nfse}TSDesc2000"/>
- *         &lt;element name="cNBS" type="{http://www.sped.fazenda.gov.br/nfse}TSCodNBS"/>
+ *         &lt;element name="cNBS" type="{http://www.sped.fazenda.gov.br/nfse}TSCodNBS" minOccurs="0"/>
  *         &lt;element name="cIntContrib" type="{http://www.sped.fazenda.gov.br/nfse}TSCodigoInternoContribuinte" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -52,7 +52,7 @@ public class TCCServ {
     protected String cTribMun;
     @XmlElement(required = true)
     protected String xDescServ;
-    @XmlElement(name = "cNBS", required = true)
+    @XmlElement(name = "cNBS")
     protected String cnbs;
     protected String cIntContrib;
 
