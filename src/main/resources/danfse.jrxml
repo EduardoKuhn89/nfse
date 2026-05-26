@@ -113,13 +113,18 @@
 	<parameter name="xLocalPrestacao" class="java.lang.String"/>
 	<parameter name="CST" class="java.lang.String"/>
 	<parameter name="cClassTrib" class="java.lang.String"/>
+	<parameter name="vTotIBSCBS" class="java.lang.String"/>
+	<parameter name="cTributacao" class="java.lang.String"/>
+	<parameter name="xLocPrestacaoCpl" class="java.lang.String"/>
+	<parameter name="xLocalIncidenciaIbsCbsCpl" class="java.lang.String"/>
+	<parameter name="xFinNFSe" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<group name="cabecalho"/>
 	<group name="geral">
 		<groupHeader>
-			<band height="63">
+			<band height="67">
 				<textField isBlankWhenNull="true">
 					<reportElement x="9" y="12" width="430" height="10" uuid="c1bffde8-8067-4ac7-a44a-2a3ab6b3f06e"/>
 					<textElement>
@@ -156,14 +161,14 @@
 					<textFieldExpression><![CDATA[$P{dCompet}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="295" y="24" width="141" height="8" uuid="8da9f113-1fda-435e-822c-8b2bc99e718e"/>
+					<reportElement x="295" y="4" width="141" height="8" uuid="8da9f113-1fda-435e-822c-8b2bc99e718e"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Data e Hora da Emissão da NFS-e]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="295" y="32" width="141" height="10" uuid="25fe24ca-d8a9-4189-945f-ac6cba29684b"/>
+					<reportElement x="295" y="12" width="141" height="10" uuid="25fe24ca-d8a9-4189-945f-ac6cba29684b"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
@@ -184,7 +189,7 @@
 					<text><![CDATA[Série da DPS]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="295" y="44" width="141" height="8" uuid="9c51f3f8-e354-49df-b921-141ba468445a"/>
+					<reportElement x="295" y="24" width="141" height="8" uuid="9c51f3f8-e354-49df-b921-141ba468445a"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
@@ -210,14 +215,14 @@
 					</graphicElement>
 				</line>
 				<staticText>
-					<reportElement x="9" y="4" width="430" height="8" uuid="95f7608d-39ec-4c8c-926d-69b2cf14e63e"/>
+					<reportElement x="9" y="4" width="284" height="8" uuid="95f7608d-39ec-4c8c-926d-69b2cf14e63e"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Chave de Acesso da NFS-e]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="295" y="52" width="141" height="10" uuid="e019f92c-0a73-4ce7-afb0-ab4af74ef500"/>
+					<reportElement x="295" y="32" width="141" height="10" uuid="e019f92c-0a73-4ce7-afb0-ab4af74ef500"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
@@ -231,11 +236,25 @@
 					<textFieldExpression><![CDATA[$P{nDPS} != null && !$P{nDPS}.trim().isEmpty() ? $P{nDPS} : "-"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="148" y="52" width="141" height="10" uuid="b4450748-4151-4826-adda-ce53399d8f18"/>
+					<reportElement x="152" y="52" width="110" height="10" uuid="b4450748-4151-4826-adda-ce53399d8f18"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{serie} != null && !$P{serie}.trim().isEmpty() ? $P{serie} : "-"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="295" y="44" width="141" height="8" uuid="0b787c91-04cf-422f-850a-4e9ca0e55f3f"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Finalidade]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="295" y="52" width="140" height="10" uuid="aaa978f3-9818-4064-a333-40c302e8f463"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{xFinNFSe}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -543,7 +562,7 @@
 	</group>
 	<group name="servico">
 		<groupHeader>
-			<band height="78">
+			<band height="87">
 				<line>
 					<reportElement x="8" y="5" width="573" height="1" uuid="7f340b8c-c3bc-41d5-b328-0ffa91d8b631"/>
 					<graphicElement>
@@ -558,74 +577,76 @@
 					<text><![CDATA[SERVIÇO PRESTADO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="10" y="19" width="141" height="8" uuid="28b8ec7e-e81e-4912-9ed8-58ae18f57bff"/>
+					<reportElement x="10" y="38" width="141" height="8" uuid="28b8ec7e-e81e-4912-9ed8-58ae18f57bff"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Código de Tributação Nacional]]></text>
+					<text><![CDATA[Tributação Nacional/Municipal]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="27" width="141" height="18" uuid="c18b7c0b-9db8-4a9d-93ed-8ba61eb27173"/>
+					<reportElement x="10" y="46" width="281" height="10" uuid="c18b7c0b-9db8-4a9d-93ed-8ba61eb27173">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{cTribNac} + " - " + $P{xTribNac}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{xTributacao}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="153" y="19" width="141" height="8" uuid="82431ef8-8c4e-4c6b-ace6-8e9a2caa3d00"/>
+					<reportElement x="178" y="19" width="141" height="8" uuid="82431ef8-8c4e-4c6b-ace6-8e9a2caa3d00"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Cód. de Tributação Municipal]]></text>
+					<text><![CDATA[Código da NBS]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="153" y="27" width="141" height="10" uuid="29c166be-f2e9-4a6c-90b0-44a6fcdf08b5"/>
+					<reportElement x="178" y="27" width="141" height="10" uuid="29c166be-f2e9-4a6c-90b0-44a6fcdf08b5"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{cTribMun} != null && !$P{cTribMun}.trim().isEmpty() ? $P{cTribMun} : "-"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{cNBS}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="296" y="19" width="141" height="8" uuid="26f3fcc0-2dad-45af-87d7-5790f4d336ae"/>
+					<reportElement x="383" y="19" width="141" height="8" uuid="db2fa04d-cd4c-45a7-b106-47564d2c228a"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Local da Prestação]]></text>
+					<text><![CDATA[Local da Prestação / Sigla UF / País]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="296" y="27" width="141" height="10" uuid="a621107e-17c5-4a7d-ab1f-99df3e3d0f13"/>
+					<reportElement x="383" y="27" width="192" height="10" uuid="3e46004f-0180-4c69-b0d3-adfa217408ae"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($P{xLocPrestacao} != null && !$P{xLocPrestacao}.trim().isEmpty() ? $P{xLocPrestacao} : "-") + ($P{ufLocPrestacao} != null && !$P{ufLocPrestacao}.trim().isEmpty() ? " - " + $P{ufLocPrestacao} : "")]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{xLocPrestacaoCpl}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="439" y="19" width="141" height="8" uuid="db2fa04d-cd4c-45a7-b106-47564d2c228a"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[País da Prestação]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="439" y="27" width="141" height="10" uuid="3e46004f-0180-4c69-b0d3-adfa217408ae"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{cPaisPrestacao} != null && !$P{cPaisPrestacao}.trim().isEmpty() ? $P{cPaisPrestacao} : "-"]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="10" y="47" width="570" height="8" uuid="7ba61f40-2a4d-4550-82cf-3d6ff7ff4849"/>
+					<reportElement x="10" y="57" width="570" height="8" uuid="7ba61f40-2a4d-4550-82cf-3d6ff7ff4849"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Descrição do Serviço]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="55" width="570" height="22" uuid="804326f8-31d2-4af0-87b4-b2d46667beb2"/>
+					<reportElement x="10" y="65" width="570" height="22" uuid="804326f8-31d2-4af0-87b4-b2d46667beb2"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{xDescServ}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="10" y="19" width="149" height="8" uuid="6da6c5ad-8140-4698-a53c-4ba41cb06286"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código de Tributação Nacional/Municipal]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="10" y="27" width="149" height="10" uuid="c7f3a00b-7031-44ab-8fb5-00d70791111d"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{cTributacao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -978,7 +999,7 @@
 	</group>
 	<group name="ibscbs">
 		<groupHeader>
-			<band height="75">
+			<band height="97">
 				<line>
 					<reportElement x="8" y="3" width="573" height="1" uuid="0f5a7a19-7eb0-4d75-8d42-04353fe6a27a"/>
 					<graphicElement>
@@ -993,172 +1014,200 @@
 					<text><![CDATA[TRIBUTAÇÃO IBS / CBS]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="10" y="17" width="113" height="8" uuid="8db6e63d-09fd-4595-b47e-d2f83bcdfbbe"/>
+					<reportElement x="10" y="39" width="113" height="8" uuid="8db6e63d-09fd-4595-b47e-d2f83bcdfbbe"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Exclusões e Red. da BC R$]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="10" y="25" width="113" height="10" uuid="f1901f7d-54ea-4aab-b9e3-055f68a42535"/>
+					<reportElement x="10" y="47" width="113" height="10" uuid="f1901f7d-54ea-4aab-b9e3-055f68a42535"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<text><![CDATA[-]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="125" y="17" width="113" height="8" uuid="f2cfe9f3-0139-4d1f-b564-93a5d9fee1c5"/>
+					<reportElement x="125" y="39" width="113" height="8" uuid="f2cfe9f3-0139-4d1f-b564-93a5d9fee1c5"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[BC Após Exclusões e Red. R$]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="125" y="25" width="113" height="10" uuid="038bbf68-2a47-41de-a5d4-10ec138e79f9"/>
+					<reportElement x="125" y="47" width="113" height="10" uuid="038bbf68-2a47-41de-a5d4-10ec138e79f9"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{ibsVBC}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="240" y="17" width="113" height="8" uuid="1495a275-a299-4698-a910-3916c93fbd45"/>
+					<reportElement x="240" y="39" width="113" height="8" uuid="1495a275-a299-4698-a910-3916c93fbd45"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Red. Alíq. IBS / Red. Alíq. CBS %]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="240" y="25" width="113" height="10" uuid="9a1a0cd3-d1a7-45e5-bdf3-00278493bebf"/>
+					<reportElement x="240" y="47" width="113" height="10" uuid="9a1a0cd3-d1a7-45e5-bdf3-00278493bebf"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($P{ibsRedAliqUF} != null ? $P{ibsRedAliqUF} : "-") + " / " + ($P{cbsRedAliq} != null ? $P{cbsRedAliq} : "-")]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="355" y="17" width="113" height="8" uuid="14bb0b6a-3d44-4283-a086-95fa0408777d"/>
+					<reportElement x="355" y="39" width="113" height="8" uuid="14bb0b6a-3d44-4283-a086-95fa0408777d"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Alíquota IBS UF % / IBS Mun %]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="355" y="25" width="113" height="10" uuid="cf48440d-2fe5-4666-ad87-c4e621da7492"/>
+					<reportElement x="355" y="47" width="113" height="10" uuid="cf48440d-2fe5-4666-ad87-c4e621da7492"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($P{ibsAliqUF} != null ? $P{ibsAliqUF} : "-") + " / " + ($P{ibsAliqMun} != null ? $P{ibsAliqMun} : "-")]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="470" y="17" width="110" height="8" uuid="dff555b4-02b7-48f0-a9e7-49d4d38a82a8"/>
+					<reportElement x="470" y="39" width="110" height="8" uuid="dff555b4-02b7-48f0-a9e7-49d4d38a82a8"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Alíquota CBS %]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="470" y="25" width="110" height="10" uuid="6b106c36-ed56-4df6-bcdb-7484a31f2c12"/>
+					<reportElement x="470" y="47" width="110" height="10" uuid="6b106c36-ed56-4df6-bcdb-7484a31f2c12"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{cbsAliq} != null ? $P{cbsAliq} : "-"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="10" y="37" width="95" height="8" uuid="22f8e79f-c15d-48c4-8cdb-2a56166f6681"/>
+					<reportElement x="10" y="59" width="95" height="8" uuid="22f8e79f-c15d-48c4-8cdb-2a56166f6681"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Alíq. Efetiva IBS Mun %]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="45" width="95" height="10" uuid="c0dc7e3e-261d-4494-91a1-76b025e7732d"/>
+					<reportElement x="10" y="67" width="95" height="10" uuid="c0dc7e3e-261d-4494-91a1-76b025e7732d"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{ibsAliqEfetMun} != null && !$P{ibsAliqEfetMun}.trim().isEmpty() ? $P{ibsAliqEfetMun} : "-"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="107" y="37" width="95" height="8" uuid="7046777e-685d-4948-bdaa-4d1476218641"/>
+					<reportElement x="124" y="59" width="95" height="8" uuid="7046777e-685d-4948-bdaa-4d1476218641"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Valor Apurado IBS Mun R$]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="107" y="45" width="95" height="10" uuid="0386e323-1782-4cd6-9b20-952bb22805e8"/>
+					<reportElement x="124" y="67" width="95" height="10" uuid="0386e323-1782-4cd6-9b20-952bb22805e8"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{ibsMunTot}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="204" y="37" width="95" height="8" uuid="b69231d0-1e6a-4e46-9a82-18161d9f4db5"/>
+					<reportElement x="240" y="59" width="95" height="8" uuid="b69231d0-1e6a-4e46-9a82-18161d9f4db5"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Alíq. Efetiva IBS Est. %]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="204" y="45" width="95" height="10" uuid="13bfe3b8-5b8f-449b-aa8b-48b820be15ad"/>
+					<reportElement x="240" y="67" width="95" height="10" uuid="13bfe3b8-5b8f-449b-aa8b-48b820be15ad"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{ibsAliqEfetUF} != null && !$P{ibsAliqEfetUF}.trim().isEmpty() ? $P{ibsAliqEfetUF} : "-"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="301" y="37" width="95" height="8" uuid="364e4ab2-ca03-4457-9657-f7358db7db29"/>
+					<reportElement x="355" y="59" width="95" height="8" uuid="364e4ab2-ca03-4457-9657-f7358db7db29"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Valor Apurado IBS Est. R$]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="301" y="45" width="95" height="10" uuid="b22adca3-9995-4e95-b5f7-5af7b1aff502"/>
+					<reportElement x="355" y="67" width="95" height="10" uuid="b22adca3-9995-4e95-b5f7-5af7b1aff502"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{ibsUFTot}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="398" y="37" width="95" height="8" uuid="3af006ed-fde9-47de-8ab6-50d22c4ead0d"/>
+					<reportElement x="470" y="59" width="95" height="8" uuid="3af006ed-fde9-47de-8ab6-50d22c4ead0d"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Alíq. Efetiva CBS %]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="398" y="45" width="95" height="10" uuid="cb343da4-156c-41e9-96af-aff200b568ac"/>
+					<reportElement x="470" y="67" width="95" height="10" uuid="cb343da4-156c-41e9-96af-aff200b568ac"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{cbsAliqEfet} != null && !$P{cbsAliqEfet}.trim().isEmpty() ? $P{cbsAliqEfet} : "-"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="495" y="37" width="85" height="8" uuid="33c3ea67-d8cb-42cf-a3d6-d30ab4196be3"/>
+					<reportElement x="123" y="79" width="115" height="8" uuid="33c3ea67-d8cb-42cf-a3d6-d30ab4196be3"/>
 					<textElement>
-						<font fontName="DejaVu Sans" size="5" isBold="true"/>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Valor Total Apurado CBS R$]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="495" y="45" width="85" height="10" uuid="4970a31e-b733-40da-b256-1bb74364a304"/>
+					<reportElement x="123" y="87" width="115" height="10" uuid="4970a31e-b733-40da-b256-1bb74364a304"/>
 					<textElement>
-						<font fontName="DejaVu Sans" size="8"/>
+						<font fontName="DejaVu Sans" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{cbsTot}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="10" y="57" width="200" height="8" uuid="b739658c-8f0e-492b-895f-e94ee54e780c"/>
+					<reportElement x="10" y="79" width="96" height="8" uuid="b739658c-8f0e-492b-895f-e94ee54e780c"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Valor Total Apurado IBS R$]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="65" width="200" height="10" uuid="9224e27d-a02c-45f7-a0dc-fae9026a58bb"/>
+					<reportElement x="10" y="87" width="96" height="10" uuid="9224e27d-a02c-45f7-a0dc-fae9026a58bb"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{ibsTot}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="10" y="18" width="100" height="8" uuid="ea5943d5-7e12-47af-9ede-816747276c0b"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="5" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CST / CClassTrib]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="123" y="18" width="345" height="8" uuid="0f0a2e32-6324-4b5f-bad2-4b1ceee066d0"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="5" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Indicador de Operação / Código IBGE Incidência / Município Incidência / País]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="10" y="26" width="100" height="10" uuid="30ad3452-cf8d-4235-b73b-12e74f2a23a9"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{CST}+" / "+$P{cClassTrib}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="123" y="26" width="344" height="10" uuid="f5d56ca7-f710-4759-9055-a35bc940d665"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{xLocalIncidenciaIbsCbsCpl}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -1275,7 +1324,7 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{vTotNF}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{vTotIBSCBS}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="438" y="38" width="141" height="8" uuid="1d153726-4d45-4428-9f86-d1aa02ef1875"/>
@@ -1292,16 +1341,23 @@
 					<textFieldExpression><![CDATA[$P{vLiq}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="7" y="58" width="284" height="18" backcolor="#E0E0E0" uuid="018f496e-8868-4b8a-a9a5-06c1b3acef79"/>
-					<textElement verticalAlignment="Middle">
+					<reportElement mode="Opaque" x="7" y="58" width="425" height="18" backcolor="#E0E0E0" uuid="018f496e-8868-4b8a-a9a5-06c1b3acef79">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+						<paragraph lineSpacingSize="1.0" rightIndent="4"/>
 					</textElement>
-					<text><![CDATA[VALOR LÍQUIDO DA NFS-e + IBS/CBS R$]]></text>
+					<text><![CDATA[VALOR LÍQUIDO DA NFS-e + IBS/CBS R$ ]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement mode="Opaque" x="293" y="58" width="286" height="18" backcolor="#E0E0E0" uuid="24601337-f655-457d-979b-28419fd5ad65"/>
+					<reportElement mode="Opaque" x="436" y="58" width="144" height="18" backcolor="#E0E0E0" uuid="24601337-f655-457d-979b-28419fd5ad65">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					</reportElement>
 					<textElement verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="9" isBold="true"/>
+						<paragraph leftIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vLiqIBSCBS}]]></textFieldExpression>
 				</textField>
@@ -1312,55 +1368,55 @@
 		<groupHeader>
 			<band height="31">
 				<line>
-					<reportElement x="8" y="3" width="573" height="1" uuid="722727e5-e1e4-45ec-98dd-eea626486eb0"/>
+					<reportElement x="7" y="3" width="573" height="1" uuid="722727e5-e1e4-45ec-98dd-eea626486eb0"/>
 					<graphicElement>
 						<pen lineWidth="0.5"/>
 					</graphicElement>
 				</line>
 				<staticText>
-					<reportElement x="10" y="5" width="570" height="9" uuid="4d011441-ec88-47ce-9993-8125c4b33e63"/>
+					<reportElement x="9" y="5" width="570" height="9" uuid="4d011441-ec88-47ce-9993-8125c4b33e63"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[TOTAIS APROXIMADOS DOS TRIBUTOS (Lei nº 12.741/2012)]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="10" y="13" width="186" height="8" uuid="1f0540e3-75ab-44a9-bebc-28b8ca3f98eb"/>
+					<reportElement x="9" y="13" width="186" height="8" uuid="1f0540e3-75ab-44a9-bebc-28b8ca3f98eb"/>
 					<textElement textAlignment="Center">
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Federais]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="21" width="186" height="10" uuid="323fed62-56c2-4b52-a6d1-3ae4b209b2fc"/>
+					<reportElement x="9" y="21" width="186" height="10" uuid="323fed62-56c2-4b52-a6d1-3ae4b209b2fc"/>
 					<textElement textAlignment="Center">
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vTotTribFed}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="206" y="13" width="186" height="8" uuid="7394d2b0-70b4-472c-8454-9df791136e20"/>
+					<reportElement x="205" y="13" width="186" height="8" uuid="7394d2b0-70b4-472c-8454-9df791136e20"/>
 					<textElement textAlignment="Center">
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Estaduais]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="206" y="21" width="186" height="10" uuid="4103353d-9b7c-49b1-9acc-be5abe06f8f8"/>
+					<reportElement x="205" y="21" width="186" height="10" uuid="4103353d-9b7c-49b1-9acc-be5abe06f8f8"/>
 					<textElement textAlignment="Center">
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vTotTribEst}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="399" y="13" width="180" height="8" uuid="930e8fd0-b977-4a9d-b4c2-d7563d1828c8"/>
+					<reportElement x="398" y="13" width="180" height="8" uuid="930e8fd0-b977-4a9d-b4c2-d7563d1828c8"/>
 					<textElement textAlignment="Center">
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Municipais]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="399" y="21" width="180" height="10" uuid="aad87bd0-6361-4d6b-818f-6fcf5bd9543b"/>
+					<reportElement x="398" y="21" width="180" height="10" uuid="aad87bd0-6361-4d6b-818f-6fcf5bd9543b"/>
 					<textElement textAlignment="Center">
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
@@ -1371,22 +1427,22 @@
 	</group>
 	<group name="informacoes">
 		<groupHeader>
-			<band height="82">
+			<band height="63">
 				<line>
-					<reportElement x="8" y="3" width="573" height="1" uuid="4714682e-b501-4ee0-8756-f1fdbbc66724"/>
+					<reportElement x="7" y="3" width="573" height="1" uuid="4714682e-b501-4ee0-8756-f1fdbbc66724"/>
 					<graphicElement>
 						<pen lineWidth="0.5"/>
 					</graphicElement>
 				</line>
 				<staticText>
-					<reportElement mode="Opaque" x="8" y="4" width="573" height="11" backcolor="#E0E0E0" uuid="2264d269-0001-4911-99d1-13c9b38b1d0d"/>
+					<reportElement mode="Opaque" x="7" y="4" width="573" height="11" backcolor="#E0E0E0" uuid="2264d269-0001-4911-99d1-13c9b38b1d0d"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[INFORMAÇÕES COMPLEMENTARES]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="17" width="570" height="60" uuid="a68ce1df-fa45-48ad-8842-bd657daa2a5f"/>
+					<reportElement x="9" y="17" width="570" height="42" uuid="a68ce1df-fa45-48ad-8842-bd657daa2a5f"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="7"/>
 					</textElement>
@@ -1398,7 +1454,7 @@
 	<background>
 		<band height="466" splitType="Stretch">
 			<staticText>
-				<reportElement positionType="Float" x="14" y="288" width="555" height="65" forecolor="rgba(0, 0, 0, 0.35686275)" uuid="2d4843b5-68b8-479a-97de-509fad030e59">
+				<reportElement positionType="Float" x="14" y="297" width="555" height="65" forecolor="rgba(0, 0, 0, 0.35686275)" uuid="2d4843b5-68b8-479a-97de-509fad030e59">
 					<printWhenExpression><![CDATA[!$P{tpAmb}.equals("1")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1463,14 +1519,14 @@ Documento Auxiliar da NFS-e]]></text>
 				<text><![CDATA[Tipo de Ambiente:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="445" y="24" width="125" height="10" uuid="52fac8f7-5441-4695-b046-83d86ed3f31e"/>
+				<reportElement x="442" y="23" width="125" height="10" uuid="52fac8f7-5441-4695-b046-83d86ed3f31e"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{xAmbGer}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="445" y="33" width="125" height="10" uuid="e23b6cb0-2771-4760-bf95-abb0d6ca9608"/>
+				<reportElement x="442" y="32" width="125" height="10" uuid="e23b6cb0-2771-4760-bf95-abb0d6ca9608"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="6"/>
 				</textElement>

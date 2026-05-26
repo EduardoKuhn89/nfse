@@ -56,9 +56,16 @@ public class DanfseGenerator {
         private String jrxmlClasspath;
 
         private String xTributacao = "-";
-        private String xLocalPrestacao = "-";
+        private String xMunicipioPrestacao = "-";
         private String xUfPrestacao = "-";
-        private String xPaisPrestacao = "-";
+        private String xPaisPrestacao = "Brasil";
+
+        private String xUfIncidenciaIbsCbs = "-";
+        private String xPaisIncidenciaIbsCbs = "Brasil";
+
+        private String xMunicipioTomador = "-";
+        private String xUfTomador = "-";
+
         private boolean cancelada = false;
 
         private byte[] imgPrefeitura;
@@ -91,8 +98,8 @@ public class DanfseGenerator {
             return this;
         }
 
-        public Builder xLocalPrestacao(String xLocalPrestacao) {
-            this.xLocalPrestacao = xLocalPrestacao;
+        public Builder xMunicipioPrestacao(String xMunicipioPrestacao) {
+            this.xMunicipioPrestacao = xMunicipioPrestacao;
             return this;
         }
 
@@ -103,6 +110,26 @@ public class DanfseGenerator {
 
         public Builder xPaisPrestacao(String xPaisPrestacao) {
             this.xPaisPrestacao = xPaisPrestacao;
+            return this;
+        }
+
+        public Builder xUfIncidenciaIbsCbs(String xUfIncidenciaIbsCbs) {
+            this.xUfIncidenciaIbsCbs = xUfIncidenciaIbsCbs;
+            return this;
+        }
+
+        public Builder xPaisIncidenciaIbsCbs(String xPaisIncidenciaIbsCbs) {
+            this.xPaisIncidenciaIbsCbs = xPaisIncidenciaIbsCbs;
+            return this;
+        }
+
+        public Builder xMunicipioTomador(String xMunicipioTomador) {
+            this.xMunicipioTomador = xMunicipioTomador;
+            return this;
+        }
+
+        public Builder xUfTomador(String xUfTomador) {
+            this.xUfTomador = xUfTomador;
             return this;
         }
 
@@ -237,10 +264,13 @@ public class DanfseGenerator {
                         result.put("tomaxBairro", valueOrHyphen(endToma.getxBairro()));
                         result.put("endToma", endToma.enderecoCompleto());
                         if (endToma.getEndNac() != null) {
-                            result.put("tomaxMun", valueOrHyphen(inf.getxLocIncid()));
-                            result.put("tomaUf", valueOrHyphen(endToma.getEndNac().getUf()));
+                            result.put("tomacMun", valueOrHyphen(endToma.getEndNac().getcMun()));
+                            //não consta no XML
+                            //result.put("tomaUf", valueOrHyphen(endToma.getEndNac().getUf())); 
                             result.put("tomaCEP", formatCep(endToma.getEndNac().getCep()));
                         }
+                        result.put("tomaxMun", xMunicipioTomador);
+                        result.put("tomaUf", xUfTomador);
                     }
                 }
             }
@@ -254,33 +284,46 @@ public class DanfseGenerator {
                     CServ cs = serv.getcServ();
                     if (cs != null) {
                         result.put("cTribNac", cs.cTribNacFormatado());
-                        result.put("xTribNac", valueOrHyphen(cs.getxDescServ()));
+                        //result.put("xTribNac", valueOrHyphen(cs.getxDescServ()));
                         result.put("cTribMun", valueOrHyphen(cs.getcTribMun()));
                         result.put("xDescServ", valueOrHyphen(cs.getxDescServ()));
                         result.put("cNBS", valueOrHyphen(cs.getcNBS()));
                         //result.put("xNBS", valueOrHyphen(cs.getxDescServ())); // descrição NBS não existe no XML
+
+                        if (cs.getcTribMun() != null) {
+                            result.put("cTributacao", valueOrHyphen(cs.getcTribMun()));
+                        } else {
+                            result.put("cTributacao", cs.cTribNacFormatado());
+                        }
+                        result.put("xTributacao", xTributacao);
                     }
                     LocPrest lp = serv.getLocPrest();
                     if (lp != null) {
                         result.put("xLocPrestacao", valueOrHyphen(inf.getxLocPrestacao()));
-                        result.put("ufLocPrestacao", "-");
-                        result.put("cPaisPrestacao", valueOrHyphen(lp.getxPais()));
+                        result.put("ufLocPrestacao", xUfPrestacao);
+                        result.put("xPaisPrestacao", valueOrHyphen(lp.getxPais()));
+
+                        result.put("xLocPrestacaoCpl", valueOrHyphen(inf.getxLocPrestacao()) + " / " + xUfPrestacao + " / " + valueOrHyphen(xPaisPrestacao));
                     }
                     InfoCompl ic = serv.getInfoCompl();
                     result.putIfAbsent("xInfComp", ic != null ? valueOrHyphen(ic.getxInfComp()) : "");
                 }
             }
-            result.put("xLocIncid", valueOrHyphen(inf.getxLocIncid()));
 
             // -----------------------------------------------------------------
             // Tributação municipal (ISSQN)
             // -----------------------------------------------------------------
+            String cIndOp = "-";
             if (infDps != null && infDps.getValores() != null) {
                 ValoresDPS vd = infDps.getValores();
 
-                if (infDps.getIBSCBS() != null && infDps.getIBSCBS().getValores() != null && infDps.getIBSCBS().getValores().getTrib() != null) {
-                    result.put("CST", valueOrHyphen(infDps.getIBSCBS().getValores().getTrib().getgIBSCBS().getCST()));
-                    result.put("cClassTrib", valueOrHyphen(infDps.getIBSCBS().getValores().getTrib().getgIBSCBS().getcClassTrib()));
+                if (infDps.getIBSCBS() != null) {
+                    cIndOp = valueOrHyphen(infDps.getIBSCBS().getcIndOp());
+                    result.put("xFinNFSe", valueOrHyphen(infDps.getIBSCBS().getxFinNFSe()));
+                    if (infDps.getIBSCBS().getValores() != null && infDps.getIBSCBS().getValores().getTrib() != null) {
+                        result.put("CST", valueOrHyphen(infDps.getIBSCBS().getValores().getTrib().getgIBSCBS().getCST()));
+                        result.put("cClassTrib", valueOrHyphen(infDps.getIBSCBS().getValores().getTrib().getgIBSCBS().getcClassTrib()));
+                    }
                 }
 
                 VServPrest vs = vd.getvServPrest();
@@ -349,7 +392,7 @@ public class DanfseGenerator {
             // -----------------------------------------------------------------
             IbsCbsNFSe ibsCbs = inf.getIbsCbs();
             if (ibsCbs != null) {
-                result.put("ibsLocalidade", valueOrHyphen(ibsCbs.getxLocalidadeIncid()));
+                result.put("xLocalIncidenciaIbsCbsCpl", cIndOp + " / " + valueOrHyphen(ibsCbs.getcLocalidadeIncid()) + " / " + valueOrHyphen(ibsCbs.getxLocalidadeIncid()) + " / " + valueOrHyphen(xUfIncidenciaIbsCbs) + " / " + valueOrHyphen(xPaisIncidenciaIbsCbs));
 
                 ValoresIbsCbs vi = ibsCbs.getValores();
                 if (vi != null) {
@@ -391,8 +434,13 @@ public class DanfseGenerator {
                         result.put("cbsTot", formatCurrency(gcbs.getvCBS()));
                         result.put("_rawCbsTot", gcbs.getvCBS());
                     }
+
                 }
             }
+
+            result.put("cIndOp", cIndOp);
+            result.put("cLocIncid", valueOrHyphen(inf.getcLocIncid()));
+            result.put("xLocIncid", valueOrHyphen(inf.getxLocIncid()));
 
             // -----------------------------------------------------------------
             // Valor líquido + IBS/CBS
@@ -408,6 +456,8 @@ public class DanfseGenerator {
             BigDecimal bdLiq = bigDecimalOfStr(vLiqRaw);
             BigDecimal bdIbs = bigDecimalOfStr((String) result.getOrDefault("_rawIbsTot", null));
             BigDecimal bdCbs = bigDecimalOfStr((String) result.getOrDefault("_rawCbsTot", null));
+
+            result.put("vTotIBSCBS", formatCurrency(bdIbs.add(bdCbs)));
             result.put("vLiqIBSCBS", formatCurrency(bdLiq.add(bdIbs).add(bdCbs)));
 
             result.put("imgQrCode", QrCodeUtils.toBase64("https://www.nfse.gov.br/ConsultaPublica/?tpc=1&chave=" + inf.getChNFSe()));
@@ -416,9 +466,8 @@ public class DanfseGenerator {
                 result.put("imgPrefeitura", Base64.getEncoder().encodeToString(imgPrefeitura));
             }
 
-            // Estas informações não constam no XML, constam como "códigos"
-            result.put("xTributacao", xTributacao);
-            result.put("xLocalPrestacao", xLocalPrestacao);
+            // Estas informações não constam no XML, constam como "códigos"           
+            result.put("xLocalPrestacao", xMunicipioPrestacao);
             result.put("xUfPrestacao", xUfPrestacao);
             result.put("xPaisPrestacao", xPaisPrestacao);
 
@@ -438,7 +487,7 @@ public class DanfseGenerator {
 
         private void putDefaults(Map<String, Object> result) {
             String[] stringParams = {
-                "chNFSe", "nNFSe", "dCompet", "dhEmi", "nDPS", "serie",
+                "chNFSe", "nNFSe", "dCompet", "dhEmi", "nDPS", "serie", "xFinNFSe",
                 "emitCNPJ", "emitxNome", "emitxMun", "emitCEP", "opSimpNac", "regApTribSN",
                 "tomaCPF", "tomaIM", "tomaxNome", "tomafone", "tomaemail", "endToma",
                 "tomaxMun", "tomaCEP", "xTribNac", "xLocPrestacao", "xDescServ",
@@ -446,19 +495,19 @@ public class DanfseGenerator {
                 "vLiq", "vTotTribFed", "vTotTribEst", "vTotTribMun",
                 "emitemail", "emitfone", "emitUF", "emitxLgr", "emitnro", "emitxBairro",
                 "tomaxLgr", "tomanro", "tomaxBairro", "emitIM", "tomaCNPJ",
-                "cTribNac", "cTribMun", "cPaisPrestacao", "cPaisResult",
+                "cTributacao", "cTribNac", "cTribMun", "cPaisPrestacao", "cPaisResult",
                 "pAliq", "nProcesso", "tpImunidade", "tpSusp", "regEspTrib",
                 "tpBM", "vCalcDR", "vCalcBM", "vISSQN", "vBC",
                 "vRetCP", "vRetCSLL", "vRetIRRF", "tpRetPisCofins", "vPis", "vCofins",
                 "vTotalRet", "cNBS", "xNBS", "xInfComp",
                 "tomaUf", "ufLocPrestacao", "xRetCP",
-                "ibsLocalidade", "ibsVBC", "ibsAliqUF", "ibsRedAliqUF", "ibsAliqEfetUF",
+                "ibsVBC", "ibsAliqUF", "ibsRedAliqUF", "ibsAliqEfetUF", "xLocalIncidenciaIbsCbsCpl",
                 "ibsAliqMun", "ibsRedAliqMun", "ibsAliqEfetMun",
                 "cbsAliq", "cbsRedAliq", "cbsAliqEfet",
-                "ibsTot", "ibsUFTot", "ibsMunTot", "cbsTot", "vTotNF", "vLiqIBSCBS",
+                "ibsTot", "ibsUFTot", "ibsMunTot", "cbsTot", "vTotIBSCBS", "vTotNF", "vLiqIBSCBS",
                 "CST", "cClassTrib",
                 "xTributacao", "xLocalPrestacao", "xUfPrestacao", "xPaisPrestacao",
-                "ambGer", "xAmbGer", "tpAmb", "xTpAmb", "cancelada"
+                "ambGer", "xAmbGer", "tpAmb", "xTpAmb"
             };
 
             for (String key : stringParams) {
@@ -530,7 +579,10 @@ public class DanfseGenerator {
                 return BigDecimal.ZERO;
             }
             try {
-                return new BigDecimal(s.trim());
+                if (s.contains(".") && s.contains(",")) {
+                    s = s.replace(".", "");
+                }
+                return new BigDecimal(s.replace(",", ".").trim());
             } catch (Exception e) {
                 return BigDecimal.ZERO;
             }

@@ -766,6 +766,23 @@ public class DPS {
             this.valores = valores;
         }
 
+        public String getxFinNFSe() {
+            if (finNFSe == null) {
+                return "-";
+            }
+
+            switch (finNFSe) {
+                case "0":
+                    return "NFS-e regular";
+                case "1":
+                    return "NFS-e de crédito";
+                case "2":
+                    return "NFS-e de débito";
+                default:
+                    return finNFSe;
+            }
+        }
+
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
