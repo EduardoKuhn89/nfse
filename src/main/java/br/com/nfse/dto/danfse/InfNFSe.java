@@ -48,6 +48,18 @@ public class InfNFSe {
     private String xTribNac;
 
     /**
+     * Descrição da tributação municipal.
+     */
+    @XmlElement(name = "xTribMun", namespace = "http://www.sped.fazenda.gov.br/nfse")
+    private String xTribMun;
+
+    /**
+     * Descrição da NBS.
+     */
+    @XmlElement(name = "xNBS", namespace = "http://www.sped.fazenda.gov.br/nfse")
+    private String xNBS;
+
+    /**
      * Versão do aplicativo.
      */
     @XmlElement(name = "verAplic", namespace = "http://www.sped.fazenda.gov.br/nfse")
@@ -165,6 +177,22 @@ public class InfNFSe {
 
     public void setxTribNac(String xTribNac) {
         this.xTribNac = xTribNac;
+    }
+
+    public String getxTribMun() {
+        return xTribMun;
+    }
+
+    public void setxTribMun(String xTribMun) {
+        this.xTribMun = xTribMun;
+    }
+
+    public String getxNBS() {
+        return xNBS;
+    }
+
+    public void setxNBS(String xNBS) {
+        this.xNBS = xNBS;
     }
 
     public String getVerAplic() {

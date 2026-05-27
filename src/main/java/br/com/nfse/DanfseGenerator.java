@@ -3,6 +3,7 @@ package br.com.nfse;
 import br.com.nfse.dto.danfse.*;
 import br.com.nfse.dto.danfse.DPS.*;
 import br.com.nfse.dto.danfse.IbsCbsNFSe.*;
+import br.com.nfse.utils.MunicipioUtils;
 import br.com.nfse.utils.NumberUtils;
 import br.com.nfse.utils.QrCodeUtils;
 import br.com.nfse.utils.XmlUtils;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 /*
@@ -55,16 +57,8 @@ public class DanfseGenerator {
         private String jrxmlPath;
         private String jrxmlClasspath;
 
-        private String xTributacao = "-";
-        private String xMunicipioPrestacao = "-";
-        private String xUfPrestacao = "-";
         private String xPaisPrestacao = "Brasil";
-
-        private String xUfIncidenciaIbsCbs = "-";
         private String xPaisIncidenciaIbsCbs = "Brasil";
-
-        private String xMunicipioTomador = "-";
-        private String xUfTomador = "-";
 
         private boolean cancelada = false;
 
@@ -74,7 +68,7 @@ public class DanfseGenerator {
         }
 
         public Builder xml(String xml) {
-            this.xml = Objects.requireNonNull(xml, "xml é obrigatório");
+            this.xml = Objects.requireNonNull(xml, "XML é obrigatório");
             return this;
         }
 
@@ -93,43 +87,13 @@ public class DanfseGenerator {
             return this;
         }
 
-        public Builder xTributacao(String xTributacao) {
-            this.xTributacao = xTributacao;
-            return this;
-        }
-
-        public Builder xMunicipioPrestacao(String xMunicipioPrestacao) {
-            this.xMunicipioPrestacao = xMunicipioPrestacao;
-            return this;
-        }
-
-        public Builder xUfPrestacao(String xUfPrestacao) {
-            this.xUfPrestacao = xUfPrestacao;
-            return this;
-        }
-
         public Builder xPaisPrestacao(String xPaisPrestacao) {
             this.xPaisPrestacao = xPaisPrestacao;
             return this;
         }
 
-        public Builder xUfIncidenciaIbsCbs(String xUfIncidenciaIbsCbs) {
-            this.xUfIncidenciaIbsCbs = xUfIncidenciaIbsCbs;
-            return this;
-        }
-
         public Builder xPaisIncidenciaIbsCbs(String xPaisIncidenciaIbsCbs) {
             this.xPaisIncidenciaIbsCbs = xPaisIncidenciaIbsCbs;
-            return this;
-        }
-
-        public Builder xMunicipioTomador(String xMunicipioTomador) {
-            this.xMunicipioTomador = xMunicipioTomador;
-            return this;
-        }
-
-        public Builder xUfTomador(String xUfTomador) {
-            this.xUfTomador = xUfTomador;
             return this;
         }
 
@@ -190,6 +154,12 @@ public class DanfseGenerator {
                 result.put("dhEmi", formatDateTime(inf.getDhProc()));
                 result.put("nDPS", valueOrHyphen(inf.getnNFSe()));
                 result.put("serie", "-");
+            }
+
+            if (inf.getxTribMun() != null && !inf.getxTribMun().isEmpty()) {
+                result.put("xTributacao", inf.getxTribMun());
+            } else {
+                result.put("xTributacao", inf.getxTribNac());
             }
 
             // -----------------------------------------------------------------
@@ -265,12 +235,14 @@ public class DanfseGenerator {
                         result.put("endToma", endToma.enderecoCompleto());
                         if (endToma.getEndNac() != null) {
                             result.put("tomacMun", valueOrHyphen(endToma.getEndNac().getcMun()));
-                            //não consta no XML
-                            //result.put("tomaUf", valueOrHyphen(endToma.getEndNac().getUf())); 
                             result.put("tomaCEP", formatCep(endToma.getEndNac().getCep()));
+
+                            MunicipioUtils.get(endToma.getEndNac().getcMun())
+                                    .ifPresent(mun -> {
+                                        result.put("tomaxMun", mun.getNomeCidade());
+                                        result.put("tomaUf", mun.getUF());
+                                    });
                         }
-                        result.put("tomaxMun", xMunicipioTomador);
-                        result.put("tomaUf", xUfTomador);
                     }
                 }
             }
@@ -304,15 +276,17 @@ public class DanfseGenerator {
                         } else {
                             result.put("cTributacao", cs.cTribNacFormatado());
                         }
-                        result.put("xTributacao", xTributacao);
                     }
                     LocPrest lp = serv.getLocPrest();
                     if (lp != null) {
-                        result.put("xLocPrestacao", valueOrHyphen(inf.getxLocPrestacao()));
-                        result.put("ufLocPrestacao", xUfPrestacao);
-                        result.put("xPaisPrestacao", valueOrHyphen(lp.getxPais()));
+                        MunicipioUtils.get(lp.getcLocPrestacao())
+                                .ifPresent(mun -> {
+                                    result.put("xLocPrestacao", mun.getNomeCidade());
+                                    result.put("ufLocPrestacao", mun.getUF());
+                                    result.put("xPaisPrestacao", valueOrHyphen(xPaisPrestacao));
 
-                        result.put("xLocPrestacaoCpl", valueOrHyphen(inf.getxLocPrestacao()) + " / " + xUfPrestacao + " / " + valueOrHyphen(xPaisPrestacao));
+                                    result.put("xLocPrestacaoCpl", valueOrHyphen(inf.getxLocPrestacao()) + " / " + mun.getUF() + " / " + valueOrHyphen(xPaisPrestacao));
+                                });
                     }
                     InfoCompl ic = serv.getInfoCompl();
                     result.putIfAbsent("xInfComp", ic != null ? valueOrHyphen(ic.getxInfComp()) : "");
@@ -416,7 +390,10 @@ public class DanfseGenerator {
             // -----------------------------------------------------------------
             IbsCbsNFSe ibsCbs = inf.getIbsCbs();
             if (ibsCbs != null) {
-                result.put("xLocalIncidenciaIbsCbsCpl", cIndOp + " / " + valueOrHyphen(ibsCbs.getcLocalidadeIncid()) + " / " + valueOrHyphen(ibsCbs.getxLocalidadeIncid()) + " / " + valueOrHyphen(xUfIncidenciaIbsCbs) + " / " + valueOrHyphen(xPaisIncidenciaIbsCbs));
+                Optional<MunicipioUtils.Municipio> ibsCbsIncidencia = MunicipioUtils.get(ibsCbs.getcLocalidadeIncid());
+                if (ibsCbsIncidencia.isPresent()) {
+                    result.put("xLocalIncidenciaIbsCbsCpl", cIndOp + " / " + valueOrHyphen(ibsCbs.getcLocalidadeIncid()) + " / " + valueOrHyphen(ibsCbsIncidencia.get().getNomeCidade()) + " / " + valueOrHyphen(ibsCbsIncidencia.get().getUF()) + " / " + valueOrHyphen(xPaisIncidenciaIbsCbs));
+                }
 
                 ValoresIbsCbs vi = ibsCbs.getValores();
                 if (vi != null) {
@@ -458,13 +435,15 @@ public class DanfseGenerator {
                         result.put("cbsTot", formatCurrency(gcbs.getvCBS()));
                         result.put("_rawCbsTot", gcbs.getvCBS());
                     }
-
                 }
             }
 
             result.put("cIndOp", cIndOp);
-            result.put("cLocIncid", valueOrHyphen(inf.getcLocIncid()));
-            result.put("xLocIncid", valueOrHyphen(inf.getxLocIncid()));
+            MunicipioUtils.get(inf.getcLocIncid())
+                    .ifPresent(mun -> {
+                        result.put("cLocIncid", valueOrHyphen(inf.getcLocIncid()));
+                        result.put("xLocIncid", valueOrHyphen(mun.getNomeCidade() + " - " + mun.getUF()));
+                    });
 
             // -----------------------------------------------------------------
             // Valor líquido + IBS/CBS
@@ -489,11 +468,6 @@ public class DanfseGenerator {
             if (imgPrefeitura != null) {
                 result.put("imgPrefeitura", Base64.getEncoder().encodeToString(imgPrefeitura));
             }
-
-            // Estas informações não constam no XML, constam como "códigos"           
-            result.put("xLocalPrestacao", xMunicipioPrestacao);
-            result.put("xUfPrestacao", xUfPrestacao);
-            result.put("xPaisPrestacao", xPaisPrestacao);
 
             result.put("ambGer", inf.getAmbGer());
             result.put("xAmbGer", inf.getXAmbGer());
