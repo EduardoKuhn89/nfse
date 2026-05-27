@@ -236,13 +236,6 @@ public class Test {
 
             byte[] pdf = DanfseGenerator.builder()
                     .xml(xml)
-                    .xTributacao("Contabilidade, inclusive serviços técnicos e auxiliares.")
-                    .xMunicipioPrestacao("Santa Rosa")
-                    .xUfPrestacao("RS")
-                    .xPaisPrestacao("Brasil")
-                    .xUfIncidenciaIbsCbs("RS")
-                    .xMunicipioTomador("Nome do Município")
-                    .xUfTomador("RS")
                     .cancelada(false)
                     //.imgPrefeitura(logoPrefeitura)      
                     .generate();
