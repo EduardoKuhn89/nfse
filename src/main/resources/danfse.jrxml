@@ -118,6 +118,7 @@
 	<parameter name="xLocPrestacaoCpl" class="java.lang.String"/>
 	<parameter name="xLocalIncidenciaIbsCbsCpl" class="java.lang.String"/>
 	<parameter name="xFinNFSe" class="java.lang.String"/>
+	<parameter name="vRetISSQN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -1282,7 +1283,7 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{vISSQN}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{vRetISSQN}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="9" y="38" width="141" height="8" uuid="740ccb2b-72a5-43c5-ae1c-4f6b52431580"/>

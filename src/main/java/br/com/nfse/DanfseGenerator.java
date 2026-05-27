@@ -221,7 +221,7 @@ public class DanfseGenerator {
                     RegTrib rt = prest.getRegTrib();
                     if (rt != null) {
                         result.put("opSimpNac", valueOrHyphen(rt.getOpSimpNac()));
-                        result.put("regApTribSN", valueOrHyphen(rt.getRegEspTrib()));
+                        result.put("regApTribSN", valueOrHyphen(rt.getRegApTribSN()));
                     }
                 }
             }
@@ -275,6 +275,15 @@ public class DanfseGenerator {
                 }
             }
 
+            if (inf.getValores() != null) {
+                result.put("vCalcDR", formatCurrency(inf.getValores().getvCalcDR()));
+                result.put("vBC", formatCurrency(inf.getValores().getvBC()));
+                result.put("pAliqAplic", formatNumber(inf.getValores().getpAliqAplic()));
+                result.put("vISSQN", formatCurrency(inf.getValores().getvISSQN()));
+                result.put("vTotalRet", formatCurrency(inf.getValores().getvTotalRet()));
+                result.put("vLiq", formatCurrency(inf.getValores().getvLiq()));
+            }
+
             // -----------------------------------------------------------------
             // Serviço
             // -----------------------------------------------------------------
@@ -287,7 +296,7 @@ public class DanfseGenerator {
                         //result.put("xTribNac", valueOrHyphen(cs.getxDescServ()));
                         result.put("cTribMun", valueOrHyphen(cs.getcTribMun()));
                         result.put("xDescServ", valueOrHyphen(cs.getxDescServ()));
-                        result.put("cNBS", valueOrHyphen(cs.getcNBS()));
+                        result.put("cNBS", valueOrHyphen(cs.getcNBSFormatado()));
                         //result.put("xNBS", valueOrHyphen(cs.getxDescServ())); // descrição NBS não existe no XML
 
                         if (cs.getcTribMun() != null) {
@@ -339,19 +348,22 @@ public class DanfseGenerator {
                     if (tm != null) {
                         result.put("tribISSQN", valueOrHyphen(tm.getTribISSQN()));
                         result.put("tpRetISSQN", valueOrHyphen(tm.getTpRetISSQN()));
-                        result.put("vBC", formatNumber(tm.getvBC()));
                         result.put("pAliq", formatNumber(tm.getpAliq()));
-                        result.put("vISSQN", formatNumber(tm.getvISSQN()));
-                        result.put("vCalcBM", formatNumber(tm.getvBM()));
-                        result.put("tpBM", valueOrHyphen(tm.getTpBM()));
-                        result.put("tpImunidade", valueOrHyphen(tm.getTpImmune()));
-                        result.put("tpSusp", valueOrHyphen(tm.getExigSuspensa()));
-                        result.put("nProcesso", valueOrHyphen(tm.getnProcesso()));
-                        result.put("regEspTrib", infDps.getPrest() != null
-                                && infDps.getPrest().getRegTrib() != null
-                                ? valueOrHyphen(infDps.getPrest().getRegTrib().getRegEspTrib()) : "-");
-                        result.put("cPaisResult", "-");
-                        result.put("vCalcDR", "-");
+
+                        if (tm.getvISSQN() != null) {
+                            result.put("vBC", formatNumber(tm.getvBC()));
+                            result.put("vISSQN", formatNumber(tm.getvISSQN()));
+                            result.put("vCalcBM", formatNumber(tm.getvBM()));
+                            result.put("tpBM", valueOrHyphen(tm.getTpBM()));
+                            result.put("tpImunidade", valueOrHyphen(tm.getTpImmune()));
+                            result.put("tpSusp", valueOrHyphen(tm.getExigSuspensa()));
+                            result.put("nProcesso", valueOrHyphen(tm.getnProcesso()));
+                            result.put("regEspTrib", infDps.getPrest() != null
+                                    && infDps.getPrest().getRegTrib() != null
+                                    ? valueOrHyphen(infDps.getPrest().getRegTrib().getRegEspTrib()) : "-");
+                            result.put("cPaisResult", "-");
+                            result.put("vCalcDR", "-");
+                        }
                     }
 
                     TribFed tf = trib.getTribFed();
@@ -363,10 +375,22 @@ public class DanfseGenerator {
                         PisCofins pc = tf.getPisCofins();
                         if (pc != null) {
                             result.put("tpRetPisCofins", valueOrHyphen(pc.getTpRetPisCofins()));
-                            result.put("vPis", formatCurrency(pc.getvRetPis()));
-                            result.put("_rawVPis", pc.getvRetPis());
-                            result.put("vCofins", formatCurrency(pc.getvRetCofins()));
-                            result.put("_rawVCofins", pc.getvRetCofins());
+                            if (pc.getvRetPis() != null) {
+                                result.put("vPis", formatCurrency(pc.getvRetPis()));
+                                result.put("_rawVPis", pc.getvRetPis());
+                            } else {
+                                result.put("vPis", formatCurrency(pc.getvPis()));
+                                result.put("_rawVPis", pc.getvPis());
+                            }
+
+                            if (pc.getvRetCofins() != null) {
+                                result.put("vCofins", formatCurrency(pc.getvRetCofins()));
+                                result.put("_rawVCofins", pc.getvRetCofins());
+                            } else {
+                                result.put("vCofins", formatCurrency(pc.getvCofins()));
+                                result.put("_rawVCofins", pc.getvCofins());
+                            }
+
                             result.put("xRetCP", pc.descTpRet());
                         }
                     }
@@ -497,7 +521,7 @@ public class DanfseGenerator {
                 "tomaxLgr", "tomanro", "tomaxBairro", "emitIM", "tomaCNPJ",
                 "cTributacao", "cTribNac", "cTribMun", "cPaisPrestacao", "cPaisResult",
                 "pAliq", "nProcesso", "tpImunidade", "tpSusp", "regEspTrib",
-                "tpBM", "vCalcDR", "vCalcBM", "vISSQN", "vBC",
+                "tpBM", "vCalcDR", "vCalcBM", "vISSQN", "vBC", "vRetISSQN",
                 "vRetCP", "vRetCSLL", "vRetIRRF", "tpRetPisCofins", "vPis", "vCofins",
                 "vTotalRet", "cNBS", "xNBS", "xInfComp",
                 "tomaUf", "ufLocPrestacao", "xRetCP",
