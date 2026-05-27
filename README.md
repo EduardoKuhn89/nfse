@@ -19,7 +19,7 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
     <dependency>
         <groupId>io.github.eduardokuhn89</groupId>
         <artifactId>nfse-client</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.2</version>
     </dependency>
 
 ## ✨ Exemplo de uso
@@ -54,13 +54,6 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
 
     byte[] pdf = DanfseGenerator.builder()
           .xml(xml)
-          .xTributacao("Descrição do Código de Tributação Nacional / Municipal")
-          .xMunicipioPrestacao("Nome do Município do Prestador")
-          .xUfPrestacao("RS")
-          .xPaisPrestacao("Brasil")
-          .xUfIncidenciaIbsCbs("RS")
-          .xMunicipioTomador("Nome do Município do Tomador")
-          .xUfTomador("RS")
-          .cancelada(false)
+          //.cancelada(true)
           //.imgPrefeitura(logoPrefeitura)      
           .generate();          
