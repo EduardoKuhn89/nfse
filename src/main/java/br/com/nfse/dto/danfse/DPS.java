@@ -497,6 +497,9 @@ public class DPS {
         @XmlElement(name = "regEspTrib", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private String regEspTrib;
 
+        @XmlElement(name = "regApTribSN", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private String regApTribSN;
+
         public String getOpSimpNac() {
             return opSimpNac;
         }
@@ -511,6 +514,14 @@ public class DPS {
 
         public void setRegEspTrib(String regEspTrib) {
             this.regEspTrib = regEspTrib;
+        }
+
+        public String getRegApTribSN() {
+            return regApTribSN;
+        }
+
+        public void setRegApTribSN(String regApTribSN) {
+            this.regApTribSN = regApTribSN;
         }
 
         public String descricaoSimplsNac() {
@@ -668,14 +679,24 @@ public class DPS {
             this.cIntContrib = c;
         }
 
-        /**
-         * Formata código de tributação nacional como "NN.NN.NN".
+        /*
+         Formata código de tributação nacional como "NN.NN.NN".
          */
         public String cTribNacFormatado() {
             if (cTribNac == null || cTribNac.length() < 6) {
                 return cTribNac;
             }
             return cTribNac.substring(0, 2) + "." + cTribNac.substring(2, 4) + "." + cTribNac.substring(4);
+        }
+
+        /*
+         Aplica a máscara padrão NBS como X.XXXX.XX.XX
+         */
+        public String getcNBSFormatado() {
+            if (cNBS == null || cNBS.length() < 9) {
+                return cNBS;
+            }
+            return cNBS.substring(0, 1) + "." + cNBS.substring(1, 5) + "." + cNBS.substring(5, 7) + "." + cNBS.substring(7, 9);
         }
     }
 
@@ -1143,8 +1164,12 @@ public class DPS {
         private String cst;
         @XmlElement(name = "tpRetPisCofins", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private String tpRetPisCofins;
+        @XmlElement(name = "vPis", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private String vPis;
         @XmlElement(name = "vRetPis", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private String vRetPis;
+        @XmlElement(name = "vCofins", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private String vCofins;
         @XmlElement(name = "vRetCofins", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private String vRetCofins;
 
@@ -1172,6 +1197,22 @@ public class DPS {
             this.vRetPis = v;
         }
 
+        public String getvPis() {
+            return vPis;
+        }
+
+        public void setvPis(String vPis) {
+            this.vPis = vPis;
+        }
+
+        public String getvCofins() {
+            return vCofins;
+        }
+
+        public void setvCofins(String vCofins) {
+            this.vCofins = vCofins;
+        }
+
         public String getvRetCofins() {
             return vRetCofins;
         }
@@ -1186,14 +1227,26 @@ public class DPS {
             }
 
             switch (tpRetPisCofins) {
+                case "0":
+                    return "PIS/COFINS/CSLL Não Retidos";
                 case "1":
-                    return "Sem Retenção";
+                    return "PIS/COFINS Retido";
                 case "2":
-                    return "PIS/COFINS Retidos";
+                    return "PIS/COFINS Não Retido";
                 case "3":
                     return "PIS/COFINS/CSLL Retidos";
                 case "4":
-                    return "CSLL Retida";
+                    return "PIS/COFINS Retidos, CSLL Não Retido";
+                case "5":
+                    return "PIS Retido, COFINS/CSLL Não Retido";
+                case "6":
+                    return "COFINS Retido, PIS/CSLL Não Retido";
+                case "7":
+                    return "PIS Não Retido, COFINS/CSLL Retidos";
+                case "8":
+                    return "PIS/COFINS Não Retidos, CSLL Retido";
+                case "9":
+                    return "COFINS Não Retido, PIS/CSLL Retidos";
                 default:
                     return tpRetPisCofins;
             }
