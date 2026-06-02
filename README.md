@@ -33,7 +33,7 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
     ConfigManager config = ConfigManager.builder()
           .certificado(certificado)
           .ambiente(AmbienteEnum.HOMOLOGACAO)
-          .pathSchemas(SCHEMAS_PATH)
+          //.pathSchemas(SCHEMAS_PATH) //(path padrão: ...resources\schemas\1.01)
           .build();          
 
     Nfse.builder()
