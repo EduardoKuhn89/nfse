@@ -26,7 +26,7 @@ public class Test {
 
     private static final String CERT_PATH = "C:\\ZTEMP\\target.pfx";
     private static final String CERT_PASSWORD = "****";
-    private static final String SCHEMAS_PATH = "C:\\GitHub\\nfse\\schemas\\1.01\\PL_NFSE_NT04_RTCv101";
+    //private static final String SCHEMAS_PATH = "C:\\GitHub\\nfse\\schemas\\1.01\\PL_NFSE_NT04_RTCv101";
     private static final String CH_NFSE_TESTE = "43172021293234012000161000000000000525080000000000";
     private static final String CNPJ_TESTE = "93234012000161";
 
@@ -101,7 +101,7 @@ public class Test {
         return ConfigManager.builder()
                 .certificado(certificado)
                 .ambiente(AmbienteEnum.HOMOLOGACAO)
-                .pathSchemas(SCHEMAS_PATH)
+                //.pathSchemas(SCHEMAS_PATH) //caso não informado utiliza de: ...resources\schemas\1.01
                 .build();
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
   JSON retornado pelo Ambiente de Dados Nacional.
  */
 public class DFeResult {
-    
+
     @SerializedName("StatusProcessamento")
     private String statusProcessamento;
 
@@ -50,6 +50,40 @@ public class DFeResult {
 
     public void setStatusProcessamento(String statusProcessamento) {
         this.statusProcessamento = statusProcessamento;
+    }
+
+    public String getMensagemProcessamento() {
+        if (statusProcessamento == null) {
+            return "Sem Status de Retorno";
+        }
+
+        switch (statusProcessamento) {
+            case "NENHUM_DOCUMENTO_LOCALIZADO":
+                return "Nenhum documento localizado";
+            case "DOCUMENTOS_LOCALIZADOS":
+                return "Documento(s) localizado(s)";
+            case "REJEICAO":
+                return "Rejeição";
+            default:
+                throw new AssertionError();
+        }
+    }
+
+    public String getCodigoProcessamento() {
+        if (statusProcessamento == null) {
+            return "0";
+        }
+
+        switch (statusProcessamento) {
+            case "NENHUM_DOCUMENTO_LOCALIZADO":
+                return "137";
+            case "DOCUMENTOS_LOCALIZADOS":
+                return "138";
+            case "REJEICAO":
+                return "139";
+            default:
+                throw new AssertionError();
+        }
     }
 
     public List<DFeItem> getLoteDFe() {

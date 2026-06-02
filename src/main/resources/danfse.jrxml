@@ -277,21 +277,14 @@
 					<text><![CDATA[EMITENTE DA NFS-e]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="10" y="16" width="141" height="10" uuid="f7c55aeb-f7a0-4729-91b0-1f2f5137b310"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="7"/>
-					</textElement>
-					<text><![CDATA[Prestador do Serviço]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="153" y="16" width="141" height="8" uuid="7f6d4641-7355-4a77-bbee-f4d24a1bcb97"/>
+					<reportElement x="10" y="16" width="141" height="8" uuid="7f6d4641-7355-4a77-bbee-f4d24a1bcb97"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CNPJ / CPF / NIF]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="153" y="24" width="141" height="10" uuid="55ccea5c-cc6b-46f1-9ade-15fc5b4a1c8f"/>
+					<reportElement x="10" y="24" width="141" height="10" uuid="55ccea5c-cc6b-46f1-9ade-15fc5b4a1c8f"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
@@ -563,7 +556,7 @@
 	</group>
 	<group name="servico">
 		<groupHeader>
-			<band height="87">
+			<band height="99">
 				<line>
 					<reportElement x="8" y="5" width="573" height="1" uuid="7f340b8c-c3bc-41d5-b328-0ffa91d8b631"/>
 					<graphicElement>
@@ -585,7 +578,7 @@
 					<text><![CDATA[Tributação Nacional/Municipal]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="46" width="281" height="10" uuid="c18b7c0b-9db8-4a9d-93ed-8ba61eb27173">
+					<reportElement x="10" y="46" width="570" height="10" uuid="c18b7c0b-9db8-4a9d-93ed-8ba61eb27173">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement>
@@ -629,7 +622,7 @@
 					<text><![CDATA[Descrição do Serviço]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="65" width="570" height="22" uuid="804326f8-31d2-4af0-87b4-b2d46667beb2"/>
+					<reportElement x="10" y="65" width="570" height="34" uuid="804326f8-31d2-4af0-87b4-b2d46667beb2"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>

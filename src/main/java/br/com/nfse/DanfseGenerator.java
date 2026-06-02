@@ -250,7 +250,7 @@ public class DanfseGenerator {
             if (inf.getValores() != null) {
                 result.put("vCalcDR", formatCurrency(inf.getValores().getvCalcDR()));
                 result.put("vBC", formatCurrency(inf.getValores().getvBC()));
-                result.put("pAliqAplic", formatNumber(inf.getValores().getpAliqAplic()));
+                result.put("pAliq", formatNumber(inf.getValores().getpAliqAplic()));
                 result.put("vISSQN", formatCurrency(inf.getValores().getvISSQN()));
                 result.put("vTotalRet", formatCurrency(inf.getValores().getvTotalRet()));
                 result.put("vLiq", formatCurrency(inf.getValores().getvLiq()));
@@ -322,7 +322,9 @@ public class DanfseGenerator {
                     if (tm != null) {
                         result.put("tribISSQN", valueOrHyphen(tm.getTribISSQN()));
                         result.put("tpRetISSQN", valueOrHyphen(tm.getTpRetISSQN()));
-                        result.put("pAliq", formatNumber(tm.getpAliq()));
+                        if (tm.getpAliq() != null) {
+                            result.put("pAliq", formatNumber(tm.getpAliq()));
+                        }
 
                         if (tm.getvISSQN() != null) {
                             result.put("vBC", formatNumber(tm.getvBC()));
