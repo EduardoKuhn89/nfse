@@ -2,6 +2,8 @@ package br.com.nfse;
 
 import br.com.nfse.dto.ProxyConfig;
 import br.com.nfse.dto.enuns.AmbienteEnum;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,7 +39,9 @@ public class ConfigManager {
         }
 
         public ConfigManagerBuilder pathSchemas(String pathSchemas) {
-            this.pathSchemas = validarPathSchemas(pathSchemas);
+            if (pathSchemas != null) {
+                this.pathSchemas = validarPathSchemas(pathSchemas);
+            }
             return this;
         }
 
@@ -68,9 +72,9 @@ public class ConfigManager {
             if (certificado == null) {
                 throw new IllegalStateException("Certificado é obrigatório");
             }
-            if (pathSchemas == null || pathSchemas.trim().isEmpty()) {
-                throw new IllegalStateException("Path dos schemas é obrigatório");
-            }
+            //if (pathSchemas == null || pathSchemas.trim().isEmpty()) {
+            //    throw new IllegalStateException("Path dos schemas é obrigatório");
+            //}
             if (proxy != null && !proxy.isValid()) {
                 throw new IllegalStateException("Configuração de proxy inválida");
             }
@@ -137,7 +141,20 @@ public class ConfigManager {
     }
 
     public String getPathSchemas() {
-        return pathSchemas;
+        if (pathSchemas != null) {
+            return pathSchemas;
+        }
+
+        try {
+            URL resource = getClass().getResource("/schemas/1.01");
+            if (resource == null) {
+                throw new IllegalStateException("Diretório de schemas não encontrado no classpath: /schemas/1.01");
+            }
+
+            return Paths.get(resource.toURI()).toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Erro ao resolver path dos schemas", e);
+        }
     }
 
     public ProxyConfig getProxy() {

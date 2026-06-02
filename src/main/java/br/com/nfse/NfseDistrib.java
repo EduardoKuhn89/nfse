@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /*
+  https://adn.producaorestrita.nfse.gov.br/contribuintes/docs/index.html#section/Apresentacao
+
   Cliente para a API de Distribuição de DF-e (Documentos Fiscais Eletrônicos)
   da NFS-e.
 
