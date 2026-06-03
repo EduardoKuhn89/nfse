@@ -416,8 +416,8 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA["1".equals($P{regApTribSN}) ? "Tributos federais e municipal pelo SN" :
-"2".equals($P{regApTribSN}) ? "Federal pelo SN e ISSQN pela NFS-e" :
+					<textFieldExpression><![CDATA["1".equals($P{regApTribSN}) ? "Tributos federais e municipal pelo Simples Nacional" :
+"2".equals($P{regApTribSN}) ? "Federal pelo Simples Nacional e ISSQN pela NFS-e" :
 "3".equals($P{regApTribSN}) ? "Federal e municipal pela NFS-e" : "-"]]></textFieldExpression>
 				</textField>
 			</band>
@@ -556,7 +556,7 @@
 	</group>
 	<group name="servico">
 		<groupHeader>
-			<band height="99">
+			<band height="107">
 				<line>
 					<reportElement x="8" y="5" width="573" height="1" uuid="7f340b8c-c3bc-41d5-b328-0ffa91d8b631"/>
 					<graphicElement>
@@ -622,7 +622,7 @@
 					<text><![CDATA[Descrição do Serviço]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="10" y="65" width="570" height="34" uuid="804326f8-31d2-4af0-87b4-b2d46667beb2"/>
+					<reportElement x="10" y="65" width="570" height="42" uuid="804326f8-31d2-4af0-87b4-b2d46667beb2"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>

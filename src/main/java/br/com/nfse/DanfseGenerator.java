@@ -339,6 +339,14 @@ public class DanfseGenerator {
                                     ? valueOrHyphen(infDps.getPrest().getRegTrib().getRegEspTrib()) : "-");
                             result.put("cPaisResult", "-");
                             result.put("vCalcDR", "-");
+
+                            if (!Objects.equals(tm.getTpRetISSQN(), "1")) {
+                                result.put("vRetISSQN", formatNumber(tm.getvISSQN()));
+                            }
+                        }
+
+                        if (!tm.getTpRetISSQN("1").equals("1")) {
+                            result.put("vRetISSQN", valueOf(result, "vISSQN"));
                         }
                     }
 
@@ -568,6 +576,10 @@ public class DanfseGenerator {
 
         private String valueOrHyphen(String s) {
             return (s == null || s.isEmpty()) ? "-" : s.trim();
+        }
+
+        private String valueOf(Map<String, Object> p, String key) {
+            return (String) p.getOrDefault(key, "-");
         }
 
         private BigDecimal bigDecimalOf(Map<String, Object> p, String key) {

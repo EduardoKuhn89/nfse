@@ -984,6 +984,13 @@ public class DPS {
             return tpRetISSQN;
         }
 
+        public String getTpRetISSQN(String defaultValue) {
+            if (tpRetISSQN == null) {
+                return defaultValue;
+            }
+            return tpRetISSQN;
+        }
+
         public void setTpRetISSQN(String t) {
             this.tpRetISSQN = t;
         }
