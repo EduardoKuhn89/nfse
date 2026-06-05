@@ -633,7 +633,7 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Código de Tributação Nacional/Municipal]]></text>
+					<text><![CDATA[Código de Tributação Nacional / Municipal]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement x="10" y="27" width="149" height="10" uuid="c7f3a00b-7031-44ab-8fb5-00d70791111d"/>
@@ -676,28 +676,14 @@
 					<textFieldExpression><![CDATA["1".equals($P{tribISSQN}) ? "Operação Tributável" : "2".equals($P{tribISSQN}) ? "Imunidade" : "3".equals($P{tribISSQN}) ? "Exportação de Serviço" : "4".equals($P{tribISSQN}) ? "Não Incidência" : "-"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="153" y="17" width="141" height="8" uuid="32325c82-84c6-4c0b-be80-c909737951a5"/>
+					<reportElement x="153" y="17" width="189" height="8" uuid="02f7e3b1-c29f-46f4-b1cf-c1a9f3702c57"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[País Resultado da Prestação]]></text>
+					<text><![CDATA[Município / Sigla UF / País de Incidência do ISSQN]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="153" y="25" width="141" height="10" uuid="f1f90a39-2102-4509-b76e-e110b715ea3d"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{cPaisResult} != null && !$P{cPaisResult}.trim().isEmpty() ? $P{cPaisResult} : "-"]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="296" y="17" width="141" height="8" uuid="02f7e3b1-c29f-46f4-b1cf-c1a9f3702c57"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Município de Incidência do ISSQN]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="296" y="25" width="141" height="10" uuid="04a081f2-4acb-45e7-9723-a5f044c62b38"/>
+					<reportElement x="153" y="25" width="279" height="10" uuid="04a081f2-4acb-45e7-9723-a5f044c62b38"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>

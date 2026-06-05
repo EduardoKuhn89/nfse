@@ -58,6 +58,7 @@ public class DanfseGenerator {
         private String jrxmlClasspath;
 
         private String xPaisPrestacao = "Brasil";
+        private String xPaisIncidenciaISSQN = "Brasil";
         private String xPaisIncidenciaIbsCbs = "Brasil";
 
         private boolean cancelada = false;
@@ -89,6 +90,11 @@ public class DanfseGenerator {
 
         public Builder xPaisPrestacao(String xPaisPrestacao) {
             this.xPaisPrestacao = xPaisPrestacao;
+            return this;
+        }
+
+        public Builder xPaisIncidenciaISSQN(String xPaisIncidenciaISSQN) {
+            this.xPaisIncidenciaISSQN = xPaisIncidenciaISSQN;
             return this;
         }
 
@@ -271,12 +277,9 @@ public class DanfseGenerator {
                         result.put("cNBS", valueOrHyphen(cs.getcNBSFormatado()));
                         //result.put("xNBS", valueOrHyphen(cs.getxDescServ())); // descrição NBS não existe no XML
 
-                        if (cs.getcTribMun() != null) {
-                            result.put("cTributacao", valueOrHyphen(cs.getcTribMun()));
-                        } else {
-                            result.put("cTributacao", cs.cTribNacFormatado());
-                        }
+                        result.put("cTributacao", valueOrHyphen(cs.cTribNacFormatado()) + " / " + valueOrHyphen(cs.getcTribMun()));
                     }
+
                     LocPrest lp = serv.getLocPrest();
                     if (lp != null) {
                         MunicipioUtils.get(lp.getcLocPrestacao())
@@ -337,7 +340,6 @@ public class DanfseGenerator {
                             result.put("regEspTrib", infDps.getPrest() != null
                                     && infDps.getPrest().getRegTrib() != null
                                     ? valueOrHyphen(infDps.getPrest().getRegTrib().getRegEspTrib()) : "-");
-                            result.put("cPaisResult", "-");
                             result.put("vCalcDR", "-");
 
                             if (!Objects.equals(tm.getTpRetISSQN(), "1")) {
@@ -452,7 +454,7 @@ public class DanfseGenerator {
             MunicipioUtils.get(inf.getcLocIncid())
                     .ifPresent(mun -> {
                         result.put("cLocIncid", valueOrHyphen(inf.getcLocIncid()));
-                        result.put("xLocIncid", valueOrHyphen(mun.getNomeCidade() + " - " + mun.getUF()));
+                        result.put("xLocIncid", valueOrHyphen(mun.getNomeCidade() + " / " + mun.getUF() + " / " + xPaisIncidenciaISSQN));
                     });
 
             // -----------------------------------------------------------------
@@ -503,7 +505,7 @@ public class DanfseGenerator {
                 "vLiq", "vTotTribFed", "vTotTribEst", "vTotTribMun",
                 "emitemail", "emitfone", "emitUF", "emitxLgr", "emitnro", "emitxBairro",
                 "tomaxLgr", "tomanro", "tomaxBairro", "emitIM", "tomaCNPJ",
-                "cTributacao", "cTribNac", "cTribMun", "cPaisPrestacao", "cPaisResult",
+                "cTributacao", "cTribNac", "cTribMun", "cPaisPrestacao",
                 "pAliq", "nProcesso", "tpImunidade", "tpSusp", "regEspTrib",
                 "tpBM", "vCalcDR", "vCalcBM", "vISSQN", "vBC", "vRetISSQN",
                 "vRetCP", "vRetCSLL", "vRetIRRF", "tpRetPisCofins", "vPis", "vCofins",
