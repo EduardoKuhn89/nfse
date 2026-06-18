@@ -40,9 +40,7 @@ import okhttp3.ResponseBody;
  */
 public class Nfse {
 
-    public static final String VERSION = "NFSe-1.00";
-
-    private static final int DEFAULT_TIMEOUT = 30;
+    public static final String VERSION = "NFSe-1.00";    
 
     private static final Map<AmbienteEnum, Map<TipoServicoEnum, String>> services = new HashMap<>();
 
@@ -54,7 +52,10 @@ public class Nfse {
 
         private OkHttpClient httpClient;
         private Protocol httpProtocol = Protocol.HTTP_1_1;
-        private int timeoutSeconds = DEFAULT_TIMEOUT;
+
+        private int connectTimeoutMillis = 10_000;
+        private int readTimeoutMillis = 60_000;
+        private int writeTimeoutMillis = 15_000;
 
         private ConfigManager config;
         private boolean assinar = true;
@@ -140,11 +141,27 @@ public class Nfse {
             return this;
         }
 
-        public NfseBuilder timeout(int timeoutSeconds) {
-            if (timeoutSeconds <= 0) {
+        public NfseBuilder connectTimeoutMillis(int connectTimeoutMillis) {
+            if (connectTimeoutMillis <= 0) {
                 throw new IllegalArgumentException("Timeout deve ser maior que zero");
             }
-            this.timeoutSeconds = timeoutSeconds;
+            this.connectTimeoutMillis = connectTimeoutMillis;
+            return this;
+        }
+
+        public NfseBuilder readTimeoutMillis(int readTimeoutMillis) {
+            if (readTimeoutMillis <= 0) {
+                throw new IllegalArgumentException("Timeout deve ser maior que zero");
+            }
+            this.readTimeoutMillis = readTimeoutMillis;
+            return this;
+        }
+
+        public NfseBuilder writeTimeoutMillis(int writeTimeoutMillis) {
+            if (writeTimeoutMillis <= 0) {
+                throw new IllegalArgumentException("Timeout deve ser maior que zero");
+            }
+            this.writeTimeoutMillis = writeTimeoutMillis;
             return this;
         }
 
@@ -587,7 +604,9 @@ public class Nfse {
                     this.httpClient,
                     this.config.getCertificado(),
                     this.httpProtocol,
-                    this.timeoutSeconds
+                    this.connectTimeoutMillis,
+                    this.readTimeoutMillis,
+                    this.writeTimeoutMillis                    
             );
 
             return client;
