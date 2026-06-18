@@ -52,8 +52,6 @@ import java.util.Objects;
  */
 public class NfseDistrib {
 
-    private static final int DEFAULT_TIMEOUT = 30;
-
     private static final Map<AmbienteEnum, String> ENDPOINTS = new HashMap<>();
 
     static {
@@ -69,7 +67,10 @@ public class NfseDistrib {
 
         private OkHttpClient httpClient;
         private Protocol httpProtocol = Protocol.HTTP_1_1;
-        private int timeoutSeconds = DEFAULT_TIMEOUT;
+
+        private int connectTimeoutMillis = 10_000;
+        private int readTimeoutMillis = 60_000;
+        private int writeTimeoutMillis = 15_000;
 
         private ConfigManager config;
         private String chNFSe;
@@ -104,11 +105,27 @@ public class NfseDistrib {
             return this;
         }
 
-        public NfseDistribBuilder timeout(int timeoutSeconds) {
-            if (timeoutSeconds <= 0) {
+        public NfseDistribBuilder connectTimeoutMillis(int connectTimeoutMillis) {
+            if (connectTimeoutMillis <= 0) {
                 throw new IllegalArgumentException("Timeout deve ser maior que zero");
             }
-            this.timeoutSeconds = timeoutSeconds;
+            this.connectTimeoutMillis = connectTimeoutMillis;
+            return this;
+        }
+
+        public NfseDistribBuilder readTimeoutMillis(int readTimeoutMillis) {
+            if (readTimeoutMillis <= 0) {
+                throw new IllegalArgumentException("Timeout deve ser maior que zero");
+            }
+            this.readTimeoutMillis = readTimeoutMillis;
+            return this;
+        }
+
+        public NfseDistribBuilder writeTimeoutMillis(int writeTimeoutMillis) {
+            if (writeTimeoutMillis <= 0) {
+                throw new IllegalArgumentException("Timeout deve ser maior que zero");
+            }
+            this.writeTimeoutMillis = writeTimeoutMillis;
             return this;
         }
 
@@ -173,7 +190,9 @@ public class NfseDistrib {
                     this.httpClient,
                     this.config.getCertificado(),
                     this.httpProtocol,
-                    this.timeoutSeconds
+                    this.connectTimeoutMillis,
+                    this.readTimeoutMillis,
+                    this.writeTimeoutMillis
             );
 
             Request request = new Request.Builder()

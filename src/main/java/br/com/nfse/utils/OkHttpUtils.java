@@ -21,7 +21,8 @@ import okhttp3.Response;
 
 public final class OkHttpUtils {
 
-    public static OkHttpClient createHttpClient(OkHttpClient existingClient, CertificateManager certificado, Protocol httpProtocol, int timeoutSeconds) throws Exception {
+    public static OkHttpClient createHttpClient(OkHttpClient existingClient, CertificateManager certificado, Protocol httpProtocol,
+            int connectTimeoutMillis, int readTimeoutMillis, int writeTimeoutMillis) throws Exception {
 
         if (existingClient != null) {
             return existingClient;
@@ -29,9 +30,9 @@ public final class OkHttpUtils {
 
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
                 .protocols(Collections.singletonList(httpProtocol))
-                .connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                .writeTimeout(timeoutSeconds, TimeUnit.SECONDS);
+                .connectTimeout(connectTimeoutMillis, TimeUnit.MILLISECONDS)
+                .readTimeout(readTimeoutMillis, TimeUnit.MILLISECONDS)
+                .writeTimeout(writeTimeoutMillis, TimeUnit.MILLISECONDS);
 
         applySslFactory(clientBuilder, certificado);
 
