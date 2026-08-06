@@ -312,11 +312,15 @@ public class DanfseGenerator {
                     }
                 }
 
-                VServPrest vs = vd.getvServPrest();
-                if (vs != null) {
-                    result.put("vServ", formatCurrency(vs.getvServ()));
-                    result.put("vDescCond", formatCurrency(vs.getvDescCondicionado()));
-                    result.put("vDescIncond", formatCurrency(vs.getvDescIncondicionado()));
+                VServPrest vsp = vd.getvServPrest();
+                if (vsp != null) {
+                    result.put("vServ", formatCurrency(vsp.getvServ()));
+                }
+
+                VDescCondIncond vdci = vd.getvDescCondIncond();
+                if (vdci != null) {
+                    result.put("vDescCond", formatCurrency(vdci.getvDescCond()));
+                    result.put("vDescIncond", formatCurrency(vdci.getvDescIncond()));
                 }
 
                 Tributos trib = vd.getTrib();

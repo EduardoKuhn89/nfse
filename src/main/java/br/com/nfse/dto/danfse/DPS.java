@@ -722,6 +722,9 @@ public class DPS {
         @XmlElement(name = "vServPrest", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private VServPrest vServPrest;
 
+        @XmlElement(name = "vDescCondIncond", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private VDescCondIncond vDescCondIncond;
+
         @XmlElement(name = "trib", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private Tributos trib;
 
@@ -731,6 +734,14 @@ public class DPS {
 
         public void setvServPrest(VServPrest v) {
             this.vServPrest = v;
+        }
+
+        public VDescCondIncond getvDescCondIncond() {
+            return vDescCondIncond;
+        }
+
+        public void setvDescCondIncond(VDescCondIncond vDescCondIncond) {
+            this.vDescCondIncond = vDescCondIncond;
         }
 
         public Tributos getTrib() {
@@ -870,10 +881,6 @@ public class DPS {
 
         @XmlElement(name = "vServ", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private String vServ;
-        @XmlElement(name = "vDescCondicionado", namespace = "http://www.sped.fazenda.gov.br/nfse")
-        private String vDescCondicionado;
-        @XmlElement(name = "vDescIncondicionado", namespace = "http://www.sped.fazenda.gov.br/nfse")
-        private String vDescIncondicionado;
 
         public String getvServ() {
             return vServ;
@@ -883,21 +890,32 @@ public class DPS {
             this.vServ = v;
         }
 
-        public String getvDescCondicionado() {
-            return vDescCondicionado;
+    }
+
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class VDescCondIncond {
+
+        @XmlElement(name = "vDescCond", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private String vDescCond;
+        @XmlElement(name = "vDescIncond", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private String vDescIncond;
+
+        public String getvDescCond() {
+            return vDescCond;
         }
 
-        public void setvDescCondicionado(String v) {
-            this.vDescCondicionado = v;
+        public void setvDescCond(String vDescCond) {
+            this.vDescCond = vDescCond;
         }
 
-        public String getvDescIncondicionado() {
-            return vDescIncondicionado;
+        public String getvDescIncond() {
+            return vDescIncond;
         }
 
-        public void setvDescIncondicionado(String v) {
-            this.vDescIncondicionado = v;
+        public void setvDescIncond(String vDescIncond) {
+            this.vDescIncond = vDescIncond;
         }
+
     }
 
     // =========================================================================

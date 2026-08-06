@@ -44,6 +44,8 @@ public class DFeResult {
 
     private transient String jsonData;
 
+    private transient String msgException;
+
     public String getStatusProcessamento() {
         return statusProcessamento;
     }
@@ -65,7 +67,7 @@ public class DFeResult {
             case "REJEICAO":
                 return "Rejeição";
             default:
-                throw new AssertionError();
+                return statusProcessamento;
         }
     }
 
@@ -82,7 +84,7 @@ public class DFeResult {
             case "REJEICAO":
                 return "139";
             default:
-                throw new AssertionError();
+                return "999";
         }
     }
 
@@ -209,6 +211,14 @@ public class DFeResult {
                 .mapToLong(Long::longValue)
                 .max()
                 .orElse(0L);
+    }
+
+    public String getMsgException() {
+        return msgException;
+    }
+
+    public void setMsgException(String msgException) {
+        this.msgException = msgException;
     }
 
     @Override
