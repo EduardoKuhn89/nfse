@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,6 +55,18 @@ public class GsonUtils {
         }
 
         return builder.create();
+    }
+
+    public static boolean isJsonValid(String jsonStr) {
+        if (jsonStr == null || jsonStr.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            JsonParser.parseString(jsonStr);
+            return true;
+        } catch (JsonSyntaxException e) {
+            return false;
+        }
     }
 
     public static <T> T deserialize(JsonElement element, Class<T> clazz) {

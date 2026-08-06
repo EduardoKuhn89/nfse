@@ -213,8 +213,15 @@ public class NfseDistrib {
             }
 
             String jsonData = body.string();
-            DFeResult result = GsonUtils.deserialize(jsonData, DFeResult.class);
-            if (result == null) {
+            DFeResult result = null;
+
+            //quando ocorre erro no servidor da API o resultado em alguns casos é um HTML de resposta, "<html><body><h1>502 Bad Gateway</h1>..."
+            if (GsonUtils.isJsonValid(jsonData)) {
+                result = GsonUtils.deserialize(jsonData, DFeResult.class);
+                if (result == null) {
+                    result = new DFeResult();
+                }
+            } else {
                 result = new DFeResult();
             }
 
