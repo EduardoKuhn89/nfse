@@ -960,20 +960,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vCofins}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="296" y="39" width="284" height="8" uuid="671f2f98-201f-488e-9fde-ee06b5e7a157"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Retenção do PIS/COFINS/CSLL]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="296" y="47" width="284" height="10" uuid="c9d158b4-ce57-48bd-8d40-ea48e919c161"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA["1".equals($P{tpRetPisCofins}) ? "Retido" : "2".equals($P{tpRetPisCofins}) ? "Não Retido" : "-"]]></textFieldExpression>
-				</textField>
 			</band>
 		</groupHeader>
 	</group>
@@ -1344,70 +1330,10 @@
 			</band>
 		</groupHeader>
 	</group>
-	<group name="aprox">
-		<groupHeader>
-			<band height="31">
-				<line>
-					<reportElement x="7" y="3" width="573" height="1" uuid="722727e5-e1e4-45ec-98dd-eea626486eb0"/>
-					<graphicElement>
-						<pen lineWidth="0.5"/>
-					</graphicElement>
-				</line>
-				<staticText>
-					<reportElement x="9" y="5" width="570" height="9" uuid="4d011441-ec88-47ce-9993-8125c4b33e63"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="7" isBold="true"/>
-					</textElement>
-					<text><![CDATA[TOTAIS APROXIMADOS DOS TRIBUTOS (Lei nº 12.741/2012)]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="9" y="13" width="186" height="8" uuid="1f0540e3-75ab-44a9-bebc-28b8ca3f98eb"/>
-					<textElement textAlignment="Center">
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Federais]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="9" y="21" width="186" height="10" uuid="323fed62-56c2-4b52-a6d1-3ae4b209b2fc"/>
-					<textElement textAlignment="Center">
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{vTotTribFed}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="205" y="13" width="186" height="8" uuid="7394d2b0-70b4-472c-8454-9df791136e20"/>
-					<textElement textAlignment="Center">
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Estaduais]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="205" y="21" width="186" height="10" uuid="4103353d-9b7c-49b1-9acc-be5abe06f8f8"/>
-					<textElement textAlignment="Center">
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{vTotTribEst}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="398" y="13" width="180" height="8" uuid="930e8fd0-b977-4a9d-b4c2-d7563d1828c8"/>
-					<textElement textAlignment="Center">
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Municipais]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="398" y="21" width="180" height="10" uuid="aad87bd0-6361-4d6b-818f-6fcf5bd9543b"/>
-					<textElement textAlignment="Center">
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{vTotTribMun}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-	</group>
+	<group name="aprox"/>
 	<group name="informacoes">
 		<groupHeader>
-			<band height="63">
+			<band height="85">
 				<line>
 					<reportElement x="7" y="3" width="573" height="1" uuid="4714682e-b501-4ee0-8756-f1fdbbc66724"/>
 					<graphicElement>
@@ -1422,11 +1348,18 @@
 					<text><![CDATA[INFORMAÇÕES COMPLEMENTARES]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="9" y="17" width="570" height="42" uuid="a68ce1df-fa45-48ad-8842-bd657daa2a5f"/>
+					<reportElement x="9" y="29" width="570" height="52" uuid="a68ce1df-fa45-48ad-8842-bd657daa2a5f"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="7"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{xInfComp}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="9" y="16" width="568" height="10" uuid="ffcce373-a069-43db-9e2c-821939cde05e"/>
+					<textElement textAlignment="Left">
+						<font fontName="DejaVu Sans" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAIS APROXIMADOS DOS TRIBUTOS (Lei nº 12.741/2012): Federais: "+$P{vTotTribFed}+"; Estaduais: "+$P{vTotTribEst}+"; Municipais: "+$P{vTotTribMun}+"."]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

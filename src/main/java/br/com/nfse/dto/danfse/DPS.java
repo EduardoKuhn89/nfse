@@ -1146,8 +1146,8 @@ public class DPS {
         @XmlElement(name = "vRetCSLL", namespace = "http://www.sped.fazenda.gov.br/nfse")
         private String vRetCSLL;
 
-        @XmlElement(name = "vRetPrev", namespace = "http://www.sped.fazenda.gov.br/nfse")
-        private String vRetPrev;
+        @XmlElement(name = "vRetCP", namespace = "http://www.sped.fazenda.gov.br/nfse")
+        private String vRetCP;
 
         public PisCofins getPisCofins() {
             return pisCofins;
@@ -1173,13 +1173,14 @@ public class DPS {
             this.vRetCSLL = v;
         }
 
-        public String getvRetPrev() {
-            return vRetPrev;
+        public String getvRetCP() {
+            return vRetCP;
         }
 
-        public void setvRetPrev(String v) {
-            this.vRetPrev = v;
+        public void setvRetCP(String vRetCP) {
+            this.vRetCP = vRetCP;
         }
+
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -1253,25 +1254,25 @@ public class DPS {
 
             switch (tpRetPisCofins) {
                 case "0":
-                    return "PIS/COFINS/CSLL Não Retidos";
+                    return "0-PIS/COFINS/CSLL Não Retidos";
                 case "1":
-                    return "PIS/COFINS Retido";
+                    return "1-PIS/COFINS Retido";
                 case "2":
-                    return "PIS/COFINS Não Retido";
+                    return "2-PIS/COFINS Não Retido";
                 case "3":
-                    return "PIS/COFINS/CSLL Retidos";
+                    return "3-PIS/COFINS/CSLL Retidos";
                 case "4":
-                    return "PIS/COFINS Retidos, CSLL Não Retido";
+                    return "4-PIS/COFINS Retidos, CSLL Não Retido";
                 case "5":
-                    return "PIS Retido, COFINS/CSLL Não Retido";
+                    return "5-PIS Retido, COFINS/CSLL Não Retido";
                 case "6":
-                    return "COFINS Retido, PIS/CSLL Não Retido";
+                    return "6-COFINS Retido, PIS/CSLL Não Retido";
                 case "7":
-                    return "PIS Não Retido, COFINS/CSLL Retidos";
+                    return "7-PIS Não Retido, COFINS/CSLL Retidos";
                 case "8":
-                    return "PIS/COFINS Não Retidos, CSLL Retido";
+                    return "8-PIS/COFINS Não Retidos, CSLL Retido";
                 case "9":
-                    return "COFINS Não Retido, PIS/CSLL Retidos";
+                    return "9-COFINS Não Retido, PIS/CSLL Retidos";
                 default:
                     return tpRetPisCofins;
             }

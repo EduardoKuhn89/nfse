@@ -359,7 +359,7 @@ public class DanfseGenerator {
                     TribFed tf = trib.getTribFed();
                     if (tf != null) {
                         result.put("vRetIRRF", formatNumber(tf.getvRetIRRF()));
-                        result.put("vRetCP", formatNumber(tf.getvRetPrev()));
+                        result.put("vRetCP", formatNumber(tf.getvRetCP()));
                         result.put("vRetCSLL", formatNumber(tf.getvRetCSLL()));
                         result.put("xRetCP", "-"); // descrição contrib.sociais – preenchida abaixo
                         PisCofins pc = tf.getPisCofins();
