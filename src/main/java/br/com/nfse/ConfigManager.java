@@ -2,17 +2,26 @@ package br.com.nfse;
 
 import br.com.nfse.dto.ProxyConfig;
 import br.com.nfse.dto.enuns.AmbienteEnum;
+import java.util.Objects;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
+import java.nio.file.StandardCopyOption;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * @author eduardo
  */
 public class ConfigManager {
+
+    private static volatile String cachedSchemasPath;
 
     public static ConfigManagerBuilder builder() {
         return new ConfigManagerBuilder();
@@ -145,16 +154,63 @@ public class ConfigManager {
             return pathSchemas;
         }
 
-        try {
-            URL resource = getClass().getResource("/schemas/1.01");
-            if (resource == null) {
-                throw new IllegalStateException("Diretório de schemas não encontrado no classpath: /schemas/1.01");
+        if (cachedSchemasPath != null) {
+            return cachedSchemasPath;
+        }
+
+        synchronized (ConfigManager.class) {
+            if (cachedSchemasPath != null) {
+                return cachedSchemasPath;
             }
 
-            return Paths.get(resource.toURI()).toString();
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException("Erro ao resolver path dos schemas", e);
+            try {
+                URL resource = getClass().getResource("/schemas/1.01");
+                if (resource == null) {
+                    throw new IllegalStateException("Diretório de schemas não encontrado no classpath: /schemas/1.01");
+                }
+
+                cachedSchemasPath = "jar".equals(resource.getProtocol())
+                        ? extractSchemasFromJar(resource)
+                        : Paths.get(resource.toURI()).toString();
+
+                return cachedSchemasPath;
+
+            } catch (URISyntaxException | IOException e) {
+                throw new IllegalStateException("Erro ao resolver path dos schemas", e);
+            }
         }
+    }
+
+    private static String extractSchemasFromJar(URL resource) throws IOException {
+        Path tempDir = Files.createTempDirectory("nfse-schemas-1.01-");
+        tempDir.toFile().deleteOnExit();
+
+        JarURLConnection jarConnection = (JarURLConnection) resource.openConnection();
+
+        try (JarFile jarFile = jarConnection.getJarFile()) {
+            String prefix = jarConnection.getEntryName(); // "schemas/1.01"
+
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                String name = entry.getName();
+
+                if (entry.isDirectory() || !name.startsWith(prefix + "/")) {
+                    continue;
+                }
+
+                String relativo = name.substring(prefix.length() + 1);
+                Path destino = tempDir.resolve(relativo);
+                Files.createDirectories(destino.getParent());
+
+                try (InputStream in = jarFile.getInputStream(entry)) {
+                    Files.copy(in, destino, StandardCopyOption.REPLACE_EXISTING);
+                }
+                destino.toFile().deleteOnExit();
+            }
+        }
+
+        return tempDir.toString();
     }
 
     public ProxyConfig getProxy() {
