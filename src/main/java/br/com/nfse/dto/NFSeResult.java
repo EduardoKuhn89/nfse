@@ -4,6 +4,7 @@ import br.com.nfse.interfaces.HttpDataAware;
 import br.com.nfse.utils.XmlUtils;
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,10 @@ public class NFSeResult implements HttpDataAware {
     private List<Erros> erros;
 
     public NFSeResult() {
+    }
+
+    public NFSeResult(HttpResult httpResult) {
+        this.httpResult = httpResult;
     }
 
     public boolean isSuccessful() {
@@ -111,6 +116,31 @@ public class NFSeResult implements HttpDataAware {
 
     public void setErros(List<Erros> erros) {
         this.erros = erros;
+    }
+
+    public void addErro(String codigo, String descricao, String complemento) {
+        if (this.erros == null) {
+            this.erros = new ArrayList<>();
+        }
+
+        this.erros.add(new Erros(codigo, descricao, complemento));
+    }
+
+    public String getErrosMessage() {
+        if (this.getErros() == null || this.getErros().isEmpty()) {
+            return "";
+        }
+
+        String msg = "";
+        for (Erros err : this.getErros()) {
+            if (err.getComplemento() != null && !err.getComplemento().isEmpty()) {
+                msg += "-[" + err.getCodigo() + "] " + err.getComplemento() + "\n";
+            } else {
+                msg += "-[" + err.getCodigo() + "] " + err.getDescricao() + "\n";
+            }
+        }
+
+        return msg.trim();
     }
 
     public String getNfseXmlGZipB64() {
@@ -194,6 +224,12 @@ public class NFSeResult implements HttpDataAware {
         private String Codigo;
         private String Descricao;
         private String Complemento;
+
+        public Erros(String Codigo, String Descricao, String Complemento) {
+            this.Codigo = Codigo;
+            this.Descricao = Descricao;
+            this.Complemento = Complemento;
+        }
 
         public Erros() {
         }

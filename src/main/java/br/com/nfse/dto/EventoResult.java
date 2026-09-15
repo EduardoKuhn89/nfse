@@ -20,8 +20,10 @@ public class EventoResult implements HttpDataAware {
     private String versaoAplicativo;
     private ZonedDateTime dataHoraProcessamento;
 
+    private String xmlEnvio;
+
     private String eventoXmlGZipB64;
-    private String eventoXml;
+    private String xmlRetorno;
 
     private List<Erros> erro;
 
@@ -65,6 +67,14 @@ public class EventoResult implements HttpDataAware {
         this.dataHoraProcessamento = dataHoraProcessamento;
     }
 
+    public String getXmlEnvio() {
+        return xmlEnvio;
+    }
+
+    public void setXmlEnvio(String xmlEnvio) {
+        this.xmlEnvio = xmlEnvio;
+    }
+
     public String getEventoXmlGZipB64() {
         return eventoXmlGZipB64;
     }
@@ -81,13 +91,30 @@ public class EventoResult implements HttpDataAware {
         this.erro = erro;
     }
 
-    public String getEventoXml() throws IOException {
-        if (eventoXml == null) {
+    public String getXmlRetorno() throws IOException {
+        if (xmlRetorno == null) {
             if (eventoXmlGZipB64 != null && !eventoXmlGZipB64.isEmpty()) {
-                eventoXml = XmlUtils.gZipB64ToXml(eventoXmlGZipB64);
+                xmlRetorno = XmlUtils.gZipB64ToXml(eventoXmlGZipB64);
             }
         }
-        return eventoXml;
+        return xmlRetorno;
+    }
+
+    public String getErrosMessage() {
+        if (this.getErro() == null || this.getErro().isEmpty()) {
+            return "";
+        }
+
+        String msg = "";
+        for (Erros err : this.getErro()) {
+            if (err.getComplemento() != null && !err.getComplemento().isEmpty()) {
+                msg += "-[" + err.getCodigo() + "] " + err.getComplemento() + "\n";
+            } else {
+                msg += "-[" + err.getCodigo() + "] " + err.getMensagem() + "\n";
+            }
+        }
+
+        return msg.trim();
     }
 
     @Override
