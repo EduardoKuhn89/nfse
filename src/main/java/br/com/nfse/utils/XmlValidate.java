@@ -1,5 +1,6 @@
 package br.com.nfse.utils;
 
+import br.com.nfse.exception.XsdSchemaValidateException;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -105,7 +106,7 @@ public class XmlValidate implements ErrorHandler {
         return new Builder();
     }
 
-    public void validate() throws Exception {
+    public void validate() throws XsdSchemaValidateException, Exception {
         configurarPropriedadesSistema();
 
         String caminhoXsd = this.pathSchemas + File.separator + xsd;
@@ -114,7 +115,7 @@ public class XmlValidate implements ErrorHandler {
         String erros = xmlValidateBySchema(xml, caminhoXsd);
 
         if (!StringUtils.isNullOrEmpty(erros)) {
-            throw new Exception("Erro(s) no XML:\n" + erros);
+            throw new XsdSchemaValidateException(erros);
         }
     }
 

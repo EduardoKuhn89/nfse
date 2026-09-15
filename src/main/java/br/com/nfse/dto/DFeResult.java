@@ -221,6 +221,23 @@ public class DFeResult {
         this.msgException = msgException;
     }
 
+    public String getErrosMessage() {
+        if (this.getErros() == null || this.getErros().isEmpty()) {
+            return "";
+        }
+
+        String msg = "";
+        for (DFeMensagem err : this.getErros()) {
+            if (err.getComplemento() != null && !err.getComplemento().isEmpty()) {
+                msg += "-[" + err.getCodigo() + "] " + err.getComplemento() + "\n";
+            } else {
+                msg += "-[" + err.getCodigo() + "] " + err.getDescricao() + "\n";
+            }
+        }
+
+        return msg.trim();
+    }
+
     @Override
     public String toString() {
         return "DFeResult{"

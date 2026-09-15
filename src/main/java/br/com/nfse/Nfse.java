@@ -4,9 +4,11 @@ import br.com.nfse.dto.AutorEvento;
 import br.com.nfse.interfaces.HttpDataAware;
 import br.com.nfse.dto.ConvenioResult;
 import br.com.nfse.dto.EventoResult;
+import br.com.nfse.dto.HttpResult;
 import br.com.nfse.dto.NFSeResult;
 import br.com.nfse.dto.enuns.AmbienteEnum;
 import br.com.nfse.dto.enuns.TipoServicoEnum;
+import br.com.nfse.exception.XsdSchemaValidateException;
 import br.com.nfse.utils.DateUtils;
 import br.com.nfse.utils.OkHttpUtils;
 import br.com.nfse.utils.StringUtils;
@@ -40,7 +42,7 @@ import okhttp3.ResponseBody;
  */
 public class Nfse {
 
-    public static final String VERSION = "NFSe-1.00";    
+    public static final String VERSION = "NFSe-1.00";
 
     private static final Map<AmbienteEnum, Map<TipoServicoEnum, String>> services = new HashMap<>();
 
@@ -192,7 +194,15 @@ public class Nfse {
             }
 
             if (this.validar) {
-                this.validateDps(xml);
+                try {
+                    this.validateDps(xml);
+                } catch (XsdSchemaValidateException e) {
+                    NFSeResult result = new NFSeResult(new HttpResult(700, "Erro na validação do Schema XML", "", ""));
+                    result.setSuccessful(false);
+                    result.addErro("X0001", "Validação do Schema XML", e.getMessage());
+                    result.setDpsXml(xml);
+                    return result;
+                }
             }
 
             String urlBase = this.getService(this.config.getAmbiente(), TipoServicoEnum.SEFIN);
@@ -226,7 +236,6 @@ public class Nfse {
                     this.config.getAmbiente(),
                     autor,
                     this.chNFSe,
-                    1,
                     codigoMotivo,
                     descricaoMotivo,
                     dhEvento
@@ -263,6 +272,7 @@ public class Nfse {
             try (Response response = client.newCall(request).execute()) {
                 EventoResult result = this.toResponseResult(response, EventoResult.class);
                 result.setSuccessful(response.isSuccessful());
+                result.setXmlEnvio(xml);
                 return result;
             }
         }
@@ -344,6 +354,7 @@ public class Nfse {
             try (Response response = client.newCall(request).execute()) {
                 EventoResult result = this.toResponseResult(response, EventoResult.class);
                 result.setSuccessful(response.isSuccessful());
+                result.setXmlEnvio(xml);
                 return result;
             }
         }
@@ -473,11 +484,10 @@ public class Nfse {
             }
         }
 
-        private TCPedRegEvt criarCancelamento(AmbienteEnum ambiente, AutorEvento autor, String chNFSe, Integer numeroPedido, String codigoMotivo, String descricaoMotivo, ZonedDateTime dhEvento) {
+        private TCPedRegEvt criarCancelamento(AmbienteEnum ambiente, AutorEvento autor, String chNFSe, String codigoMotivo, String descricaoMotivo, ZonedDateTime dhEvento) {
 
-            String nPedRegEvento = StringUtils.zerosParaEsquerda("" + numeroPedido, 3);
-
-            String id = "PRE" + chNFSe + "101101" + nPedRegEvento;
+            //String nPedRegEvento = StringUtils.zerosParaEsquerda("" + numeroPedido, 3);
+            String id = "PRE" + chNFSe + "101101"; //+ nPedRegEvento;
 
             TCPedRegEvt pedRegEvt = new TCPedRegEvt();
             pedRegEvt.setVersao("1.00");
@@ -555,7 +565,7 @@ public class Nfse {
             }
         }
 
-        private void validateDps(String xml) throws Exception {
+        private void validateDps(String xml) throws XsdSchemaValidateException, Exception {
             XmlValidate.builder()
                     .pathSchemas(this.config.getPathSchemas())
                     .xml(xml)
@@ -606,7 +616,7 @@ public class Nfse {
                     this.httpProtocol,
                     this.connectTimeoutMillis,
                     this.readTimeoutMillis,
-                    this.writeTimeoutMillis                    
+                    this.writeTimeoutMillis
             );
 
             return client;

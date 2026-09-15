@@ -6,6 +6,16 @@ package br.com.nfse.dto;
  */
 public class AutorEvento {
 
+    public static AutorEvento inscricaoFederal(String inscricaoFederal) {
+        AutorEvento autor = new AutorEvento();
+        if (inscricaoFederal.length() == 11) {
+            autor.setCpfAutor(inscricaoFederal);
+        } else {
+            autor.setCnpjAutor(inscricaoFederal);
+        }
+        return autor;
+    }
+
     public static AutorEvento cnpj(String cnpj) {
         AutorEvento autor = new AutorEvento();
         autor.setCnpjAutor(cnpj);
