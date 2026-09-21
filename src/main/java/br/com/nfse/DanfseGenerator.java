@@ -300,6 +300,7 @@ public class DanfseGenerator {
             // Tributação municipal (ISSQN)
             // -----------------------------------------------------------------
             String cIndOp = "-";
+            BigDecimal vServ = null;
             if (infDps != null && infDps.getValores() != null) {
                 ValoresDPS vd = infDps.getValores();
 
@@ -314,7 +315,8 @@ public class DanfseGenerator {
 
                 VServPrest vsp = vd.getvServPrest();
                 if (vsp != null) {
-                    result.put("vServ", formatCurrency(vsp.getvServ()));
+                    vServ = bigDecimalOfStr(vsp.getvServ());
+                    result.put("vServ", formatCurrency(vServ));
                 }
 
                 VDescCondIncond vdci = vd.getvDescCondIncond();
@@ -413,7 +415,11 @@ public class DanfseGenerator {
 
                 ValoresIbsCbs vi = ibsCbs.getValores();
                 if (vi != null) {
-                    result.put("ibsVBC", formatNumber(vi.getvBC()));
+                    BigDecimal ibsCbsBC = bigDecimalOfStr(vi.getvBC());
+                    if (vServ != null) {
+                        result.put("ibsCbsRedBC", formatNumber(vServ.subtract(ibsCbsBC)));
+                    }
+                    result.put("ibsCbsBC", formatNumber(ibsCbsBC));
 
                     AliqUF uf = vi.getUf();
                     if (uf != null) {
@@ -515,7 +521,7 @@ public class DanfseGenerator {
                 "vRetCP", "vRetCSLL", "vRetIRRF", "tpRetPisCofins", "vPis", "vCofins",
                 "vTotalRet", "cNBS", "xNBS", "xInfComp",
                 "tomaUf", "ufLocPrestacao", "xRetCP",
-                "ibsVBC", "ibsAliqUF", "ibsRedAliqUF", "ibsAliqEfetUF", "xLocalIncidenciaIbsCbsCpl",
+                "ibsCbsRedBC", "ibsCbsBC", "ibsAliqUF", "ibsRedAliqUF", "ibsAliqEfetUF", "xLocalIncidenciaIbsCbsCpl",
                 "ibsAliqMun", "ibsRedAliqMun", "ibsAliqEfetMun",
                 "cbsAliq", "cbsRedAliq", "cbsAliqEfet",
                 "ibsTot", "ibsUFTot", "ibsMunTot", "cbsTot", "vTotIBSCBS", "vTotNF", "vLiqIBSCBS",
@@ -604,6 +610,13 @@ public class DanfseGenerator {
             } catch (Exception e) {
                 return BigDecimal.ZERO;
             }
+        }
+
+        private String formatNumber(BigDecimal bd) {
+            if (bd == null) {
+                return "-";
+            }
+            return NumberUtils.format(bd);
         }
 
         private String formatNumber(String s) {

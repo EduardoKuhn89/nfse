@@ -84,7 +84,7 @@
 	<parameter name="ufLocPrestacao" class="java.lang.String"/>
 	<parameter name="xRetCP" class="java.lang.String"/>
 	<parameter name="ibsLocalidade" class="java.lang.String"/>
-	<parameter name="ibsVBC" class="java.lang.String"/>
+	<parameter name="ibsCbsBC" class="java.lang.String"/>
 	<parameter name="ibsAliqUF" class="java.lang.String"/>
 	<parameter name="ibsRedAliqUF" class="java.lang.String"/>
 	<parameter name="ibsAliqEfetUF" class="java.lang.String"/>
@@ -119,6 +119,7 @@
 	<parameter name="xLocalIncidenciaIbsCbsCpl" class="java.lang.String"/>
 	<parameter name="xFinNFSe" class="java.lang.String"/>
 	<parameter name="vRetISSQN" class="java.lang.String"/>
+	<parameter name="ibsCbsRedBC" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -987,13 +988,6 @@
 					<text><![CDATA[Exclusões e Red. da BC R$]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="10" y="47" width="113" height="10" uuid="f1901f7d-54ea-4aab-b9e3-055f68a42535"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="8"/>
-					</textElement>
-					<text><![CDATA[-]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="125" y="39" width="113" height="8" uuid="f2cfe9f3-0139-4d1f-b564-93a5d9fee1c5"/>
 					<textElement>
 						<font fontName="DejaVu Sans" size="5" isBold="true"/>
@@ -1005,7 +999,7 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{ibsVBC}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{ibsCbsBC}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="240" y="39" width="113" height="8" uuid="1495a275-a299-4698-a910-3916c93fbd45"/>
@@ -1174,6 +1168,15 @@
 						<font fontName="DejaVu Sans" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{xLocalIncidenciaIbsCbsCpl}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="10" y="47" width="98" height="10" uuid="604bca3f-4d9d-4959-b327-efc877eb0b05">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ibsCbsRedBC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
