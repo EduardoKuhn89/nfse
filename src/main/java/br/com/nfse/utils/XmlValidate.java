@@ -17,13 +17,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 public class XmlValidate implements ErrorHandler {
 
     private static final String MAX_OCCUR_LIMIT = "9999";
-    private static final String SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
-    private static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
-    private static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
     private static final List<String> IGNORED_ERROR_PREFIXES = Collections.unmodifiableList(Arrays.asList(
             "cvc-enumeration-valid",
@@ -172,39 +171,30 @@ public class XmlValidate implements ErrorHandler {
 
     private DocumentBuilder createDocumentBuilder(String caminhoXsd) throws Exception {
         try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+            Schema schema = schemaFactory.newSchema(new File(caminhoXsd));
+
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(true);
             factory.setNamespaceAware(true);
+            factory.setSchema(schema);
 
             if (secureProcessing) {
                 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 configurarSeguranca(factory);
             }
 
-            configureAccessSchemas(factory);
-
-            factory.setAttribute(SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
-            factory.setAttribute(SCHEMA_SOURCE, caminhoXsd);
+            try {
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, allowExternalSchema ? "file,http,https" : "");
+            } catch (IllegalArgumentException e) {
+            }
 
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setErrorHandler(this);
 
             return builder;
-        } catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException | SAXException e) {
             throw new Exception("Erro ao configurar parser XML: " + e.getMessage(), e);
-        }
-    }
-
-    private void configureAccessSchemas(DocumentBuilderFactory factory) {
-        try {
-            factory.setAttribute("http://javax.xml.XMLConstants/property/accessExternalSchema", "file,http,https");
-            factory.setAttribute("http://javax.xml.XMLConstants/property/accessExternalDTD", "file,http,https");
-
-            factory.setAttribute("http://apache.org/xml/features/validation/schema", true);
-            factory.setAttribute("http://apache.org/xml/features/validation/schema-full-checking", true);
-
-        } catch (IllegalArgumentException e) {
-            System.err.println("Aviso: Não foi possível configurar acesso a schemas externos: " + e.getMessage());
         }
     }
 
