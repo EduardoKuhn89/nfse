@@ -198,6 +198,7 @@ public class DanfseGenerator {
                     if (rt != null) {
                         result.put("opSimpNac", valueOrHyphen(rt.getOpSimpNac()));
                         result.put("regApTribSN", valueOrHyphen(rt.getRegApTribSN()));
+                        result.put("regEspTrib", valueOrHyphen(rt.getRegEspTrib()));
                     }
                 }
             }
@@ -343,9 +344,6 @@ public class DanfseGenerator {
                             result.put("tpImunidade", valueOrHyphen(tm.getTpImmune()));
                             result.put("tpSusp", valueOrHyphen(tm.getExigSuspensa()));
                             result.put("nProcesso", valueOrHyphen(tm.getnProcesso()));
-                            result.put("regEspTrib", infDps.getPrest() != null
-                                    && infDps.getPrest().getRegTrib() != null
-                                    ? valueOrHyphen(infDps.getPrest().getRegTrib().getRegEspTrib()) : "-");
                             result.put("vCalcDR", "-");
 
                             if (!Objects.equals(tm.getTpRetISSQN(), "1")) {
