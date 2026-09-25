@@ -4,7 +4,7 @@
 
     <groupId>io.github.eduardokuhn89</groupId>
     <artifactId>nfse-client</artifactId>
-    <version>1.3.2</version>
+    <version>1.3.4</version>
     <packaging>jar</packaging>
 
     <name>NFS-e Client</name>
