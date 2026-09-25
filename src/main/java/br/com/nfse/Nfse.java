@@ -8,6 +8,7 @@ import br.com.nfse.dto.HttpResult;
 import br.com.nfse.dto.NFSeResult;
 import br.com.nfse.dto.enuns.AmbienteEnum;
 import br.com.nfse.dto.enuns.TipoServicoEnum;
+import br.com.nfse.exception.HttpResponseException;
 import br.com.nfse.exception.XsdSchemaValidateException;
 import br.com.nfse.utils.DateUtils;
 import br.com.nfse.utils.OkHttpUtils;
@@ -32,6 +33,8 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.RequestBody;
@@ -45,6 +48,8 @@ public class Nfse {
     public static final String VERSION = "NFSe-1.00";
 
     private static final Map<AmbienteEnum, Map<TipoServicoEnum, String>> services = new HashMap<>();
+
+    private static final Logger LOG = Logger.getLogger(Nfse.class.getName());
 
     public static NfseBuilder builder() {
         return new NfseBuilder();
@@ -223,6 +228,20 @@ public class Nfse {
             try (Response response = client.newCall(request).execute()) {
                 NFSeResult result = this.toResponseResult(response, NFSeResult.class);
                 result.setSuccessful(response.isSuccessful());
+                result.setDpsXml(xml);
+                return result;
+            } catch (HttpResponseException e) {
+                //erro capturado com o body real da resposta (ex: JSON malformado, erro de negócio inesperado)
+                NFSeResult result = new NFSeResult(new HttpResult(e.getHttpCode(), e.getHttpMessage(), e.getUrl(), e.getRawBody()));
+                result.setSuccessful(false);
+                result.addErro("X0002", "Erro ao processar retorno da SEFIN Nacional", e.getMessage());
+                result.setDpsXml(xml);
+                return result;
+            } catch (IOException e) {
+                //falha de rede/conexão — nunca chegou a existir um body de resposta
+                NFSeResult result = new NFSeResult(new HttpResult(701, "Erro de comunicação com a SEFIN Nacional", url, ""));
+                result.setSuccessful(false);
+                result.addErro("X0003", "Erro de comunicação com a SEFIN Nacional", e.getMessage());
                 result.setDpsXml(xml);
                 return result;
             }
@@ -594,19 +613,34 @@ public class Nfse {
             }
 
             String bodyData = body.string();
-            T result = GsonUtils.deserialize(bodyData, clazz);
+            try {
+                T result = GsonUtils.deserialize(bodyData, clazz);
 
-            if (result instanceof HttpDataAware) {
-                HttpDataAware httpAware = (HttpDataAware) result;
-                httpAware.setHttpResult(
-                        response.code(),
-                        response.message(),
-                        response.request().url().toString(),
-                        bodyData
+                if (result instanceof HttpDataAware) {
+                    HttpDataAware httpAware = (HttpDataAware) result;
+                    httpAware.setHttpResult(
+                            response.code(),
+                            response.message(),
+                            response.request().url().toString(),
+                            bodyData
+                    );
+                }
+
+                return result;
+            } catch (Exception e) {
+                LOG.log(
+                        Level.SEVERE,
+                        "\n--------------------------------------------------\n"
+                        + "Erro ao montar o ResponseResult:\n"
+                        + "--------------------------------------------------\n"
+                        + " Exception: " + e.getMessage()
+                        + "--------------------------------------------------\n"
+                        + " BODY: " + bodyData,
+                        e
                 );
-            }
 
-            return result;
+                throw new HttpResponseException(response.code(), response.message(), response.request().url().toString(), bodyData, e);
+            }
         }
 
         private OkHttpClient createHttpClient() throws Exception {
