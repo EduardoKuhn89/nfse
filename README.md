@@ -19,7 +19,7 @@ Cliente Java para integração com a **NFS-e Nacional**, oferecendo estruturas, 
     <dependency>
         <groupId>io.github.eduardokuhn89</groupId>
         <artifactId>nfse-client</artifactId>
-        <version>1.2.2</version>
+        <version>1.3.5</version>
     </dependency>
 
 ## ✨ Exemplo de uso
