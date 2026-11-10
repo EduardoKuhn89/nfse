@@ -147,8 +147,14 @@ public class NfseDistrib {
             validateConfig();
 
             HttpUrl.Builder urlBuilder = OkHttpUtils.toHttpUrlBuilder(this.getEndpoint() + "/DFe/" + ultimoNSU);
-            addCnpjConsulta(urlBuilder);
-            urlBuilder.addQueryParameter("lote", "true");
+            addCnpjConsulta(urlBuilder);            
+            
+            String inscFederal = this.config.getCertificado().getInscFederal();
+            if (inscFederal.length() == 11) {
+                urlBuilder.addQueryParameter("cpfConsulta", inscFederal);
+            } else {
+                urlBuilder.addQueryParameter("cnpjConsulta", inscFederal);
+            }
 
             return httpGet(urlBuilder.build().toString());
         }
