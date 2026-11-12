@@ -3,6 +3,7 @@ package br.com.nfse;
 import br.com.nfse.dto.danfse.*;
 import br.com.nfse.dto.danfse.DPS.*;
 import br.com.nfse.dto.danfse.IbsCbsNFSe.*;
+import br.com.nfse.utils.DateUtils;
 import br.com.nfse.utils.MunicipioUtils;
 import br.com.nfse.utils.NumberUtils;
 import br.com.nfse.utils.QrCodeUtils;
@@ -150,16 +151,21 @@ public class DanfseGenerator {
             result.put("chNFSe", inf.getChNFSe());
             result.put("nNFSe", valueOrHyphen(inf.getnNFSe()));
 
+            LocalDateTime dataEmissao;
             if (infDps != null) {
                 result.put("dCompet", formatDate(infDps.getdCompet()));
                 result.put("dhEmi", formatDateTime(infDps.getDhEmi()));
                 result.put("nDPS", valueOrHyphen(infDps.getnDPS()));
                 result.put("serie", valueOrHyphen(infDps.getSerie()));
+
+                dataEmissao = toLocalDateTime(infDps.getDhEmi(), LocalDateTime.now());
             } else {
                 result.put("dCompet", formatDate(inf.getDhProc()));
                 result.put("dhEmi", formatDateTime(inf.getDhProc()));
                 result.put("nDPS", valueOrHyphen(inf.getnNFSe()));
                 result.put("serie", "-");
+
+                dataEmissao = toLocalDateTime(inf.getDhProc(), LocalDateTime.now());
             }
 
             if (inf.getxTribMun() != null && !inf.getxTribMun().isEmpty()) {
@@ -480,8 +486,17 @@ public class DanfseGenerator {
             BigDecimal bdIbs = bigDecimalOfStr((String) result.getOrDefault("_rawIbsTot", null));
             BigDecimal bdCbs = bigDecimalOfStr((String) result.getOrDefault("_rawCbsTot", null));
 
-            result.put("vTotIBSCBS", formatCurrency(bdIbs.add(bdCbs)));
-            result.put("vLiqIBSCBS", formatCurrency(bdLiq.add(bdIbs).add(bdCbs)));
+            if (dataEmissao.getYear() >= 2029) {
+                result.put("vTotIBSCBS", formatCurrency(bdIbs.add(bdCbs)));
+                result.put("vLiqIBSCBS", formatCurrency(bdLiq.add(bdIbs).add(bdCbs)));
+            } else {
+                result.put("vTotIBSCBS", formatCurrency(bdCbs));
+                if (dataEmissao.getYear() >= 2027) {
+                    result.put("vLiqIBSCBS", formatCurrency(bdLiq.add(bdCbs)));
+                } else {
+                    result.put("vLiqIBSCBS", formatCurrency(bdLiq));
+                }
+            }
 
             result.put("imgQrCode", QrCodeUtils.toBase64("https://www.nfse.gov.br/ConsultaPublica/?tpc=1&chave=" + inf.getChNFSe()));
 
@@ -497,6 +512,7 @@ public class DanfseGenerator {
                 result.put("xTpAmb", dps.getInfDPS().getXTpAmb());
             }
 
+            result.put("ano", dataEmissao.getYear());
             result.put("cancelada", cancelada);
 
             putDefaults(result);
@@ -640,6 +656,21 @@ public class DanfseGenerator {
                 return FMT_MOEDA.format(bd);
             } catch (NumberFormatException e) {
                 return "";
+            }
+        }
+
+        private LocalDateTime toLocalDateTime(String iso, LocalDateTime defaultValue) {
+            if (iso == null || iso.isEmpty()) {
+                return defaultValue;
+            }
+            try {
+                return ZonedDateTime.parse(iso).toLocalDateTime();
+            } catch (Exception e) {
+                try {
+                    return LocalDateTime.parse(iso.substring(0, 19));
+                } catch (Exception ex) {
+                    return defaultValue;
+                }
             }
         }
 
