@@ -120,6 +120,7 @@
 	<parameter name="xFinNFSe" class="java.lang.String"/>
 	<parameter name="vRetISSQN" class="java.lang.String"/>
 	<parameter name="ibsCbsRedBC" class="java.lang.String"/>
+	<parameter name="ano" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -1132,7 +1133,7 @@
 					<textElement>
 						<font fontName="DejaVu Sans" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Valor Total Apurado IBS R$]]></text>
+					<text><![CDATA[*Valor Total Apurado IBS R$]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement x="10" y="87" width="96" height="10" uuid="9224e27d-a02c-45f7-a0dc-fae9026a58bb"/>
@@ -1281,13 +1282,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vPisCofinsTotal}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="295" y="38" width="141" height="8" uuid="a7bc46da-42e8-403b-adfb-1976e2b8c6fb"/>
-					<textElement>
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Total do IBS/CBS R$]]></text>
-				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement x="295" y="46" width="141" height="10" uuid="8e7c782b-e0e5-4422-9bfb-a86c3d42be85"/>
 					<textElement>
@@ -1309,17 +1303,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vLiq}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement mode="Opaque" x="7" y="58" width="425" height="18" backcolor="#E0E0E0" uuid="018f496e-8868-4b8a-a9a5-06c1b3acef79">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="DejaVu Sans" size="6" isBold="true"/>
-						<paragraph lineSpacingSize="1.0" rightIndent="4"/>
-					</textElement>
-					<text><![CDATA[VALOR LÍQUIDO DA NFS-e + IBS/CBS R$ ]]></text>
-				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement mode="Opaque" x="436" y="58" width="144" height="18" backcolor="#E0E0E0" uuid="24601337-f655-457d-979b-28419fd5ad65">
 						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
@@ -1329,6 +1312,27 @@
 						<paragraph leftIndent="2"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{vLiqIBSCBS}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="295" y="38" width="141" height="10" uuid="9814ae15-6db0-4c1f-983a-877a0ce16bb2">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ano} >= 2029 ? "Total do IBS/CBS R$" : "Total da CBS R$"]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="7" y="58" width="427" height="18" backcolor="#E0E0E0" uuid="cacf321a-9816-4494-a698-8ca8926f4564">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.spacingAfter" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+						<paragraph leftIndent="2" rightIndent="3"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ano} >= 2029 ? "VALOR LÍQUIDO DA NFS-e + IBS/CBS R$" : $P{ano} >= 2027 ? "VALOR LÍQUIDO DA NFS-e + CBS R$" : "VALOR LÍQUIDO DA NFS-e R$"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
